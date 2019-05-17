@@ -1,7 +1,7 @@
 {
   "output-language": "xml",
 
-  "expected-output-path": "/home/dimitri/Documents/gitlab/honours/comix/expected.xml",
+  "expected-output-path": "/path/to/expectedMessageFile",
   "target-entries": [
     {
       "value": "wgen0001",
