@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:lu="http://commonws/cetrel/lu">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <lu:perform>
+         <lu:resInput>
+            <lu:UserName>wgen0001</lu:UserName>
+            <lu:IssuerBankCode>0111</lu:IssuerBankCode>
+            <lu:RequestId>0001User</lu:RequestId>
+            <lu:CardNumber>123456789123456</lu:CardNumber>
+         </lu:resInput>      
+      </lu:perform>   
+   </soapenv:Body>
+</soapenv:Envelope>

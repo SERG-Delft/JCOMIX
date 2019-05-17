@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="Custom ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        Custom PMD ruleset.
+    </description>
+
+   <rule ref="category/java/bestpractices.xml">
+       <!-- conflicts with personal Vector class -->
+        <exclude name="ReplaceVectorWithList"/>
+       <!-- custom logger not created yet -->
+        <exclude name="AvoidPrintStackTrace" />
+       <!-- does not allow writing test structures beforehand -->
+        <exclude name="JUnitTestsShouldIncludeAssert" />
+       <!-- handled by checkstyle with custom settings -->
+        <exclude name="UnusedImports" />
+        <exclude name="GuardLogStatement" />
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
+        <!--<exclude name="JUnit4TestShouldUseAfterAnnotation" />-->
+        <!--<exclude name="JUnit4TestShouldUseBeforeAnnotation" />-->
+        <exclude name="UseVarargs" />
+        <exclude name="AccessorMethodGeneration" />
+    </rule>
+    <rule ref="category/java/bestpractices.xml/JUnitTestContainsTooManyAsserts">
+        <properties>
+            <property name="maximumAsserts" value="4" />
+        </properties>
+    </rule>
+    <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod">
+        <properties>
+            <!-- Ignore @Test methods -->
+            <property name="violationSuppressXPath"
+                      value="//MethodDeclaration/../Annotation/MarkerAnnotation/Name[@Image='Test']" />
+        </properties>
+    </rule>
+</ruleset>

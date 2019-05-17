@@ -1,0 +1,76 @@
+image: maven:latest
+
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+  - build
+  - static-analysis
+  - test
+  - deploy
+
+build:
+  stage: build
+
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean test-compile'
+
+test-PTG:
+  stage: test
+
+  cache:
+    paths:
+      - .m2/repository
+
+  script:
+    - cd PTG
+    - 'mvn $MAVEN_CLI_OPTS -B install'
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/",
+      instructions, "instructions covered"; print 100*covered/instructions, "%
+      covered" }' target/site/jacoco/jacoco.csv
+
+  coverage: /(\d+.\d+ \%) covered/
+
+  artifacts:
+    paths:
+      - PTG/target/surefire-reports
+
+    reports:
+      junit:
+        - PTG/target/surefire-reports/TEST-*.xml
+
+
+static-analysis-PTG:
+  stage: static-analysis
+  script:
+    - cd PTG
+    - "mvn $MAVEN_CLI_OPTS -B test-compile checkstyle:check"
+    - "mvn $MAVEN_CLI_OPTS -B pmd:check"
+
+pages:
+  stage: deploy
+  only:
+    - master
+    - development
+  script:
+    - mv PTG/target/surefire-reports public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+
+deploy:
+  stage: deploy
+  only:
+    - master
+    - development
+  script:
+    - 'mvn $MAVEN_CLI_OPTS clean install'
+  artifacts:
+    paths:
+      - PTG/target/PTG-1.0-SNAPSHOT-jar-with-dependencies.jar

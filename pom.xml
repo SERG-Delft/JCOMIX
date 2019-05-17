@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ewi.tudelft.nl</groupId>
+    <artifactId>comix</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>PTG</module>
+        <module>TOB</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.compiler.plugin>3.8.0</maven.compiler.plugin>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
+        <surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
+        <pmd.plugin.version>3.11.0</pmd.plugin.version>
+        <maven.checkstyle.plugin>3.0.0</maven.checkstyle.plugin>
+
+        <checkstyle.version>8.12</checkstyle.version>
+        <junit.jupiter.version>5.3.1</junit.jupiter.version>
+        <junit.platform.version>1.3.1</junit.platform.version>
+        <junit.vintage.version>5.3.1</junit.vintage.version>
+        <mockito.core.version>2.8.9</mockito.core.version>
+
+        <!-- Plugin versions -->
+        <maven.site.plugin.version>3.3</maven.site.plugin.version>
+        <maven.source.plugin.version>2.2.1</maven.source.plugin.version>
+
+        <!-- Reports versions -->
+        <maven.javadoc.plugin.verions>2.9.1</maven.javadoc.plugin.verions>
+        <maven.project.info.reports.plugin.version>2.7</maven.project.info.reports.plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- Testing & Reporting -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven.project.info.reports.plugin.version}</version>
+            </plugin>
+            <!-- generate Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.verions}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

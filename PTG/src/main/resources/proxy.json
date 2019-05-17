@@ -1,0 +1,27 @@
+{
+  "output-language": "xml",
+
+  "expected-output-path": "/home/dimitri/Documents/gitlab/honours/comix/expected.xml",
+  "target-entries": [
+    {
+      "value": "wgen0001",
+      "proxy-key": "UserName",
+      "html-target": "UserName"
+    },
+    {
+      "value": "0111",
+      "proxy-key": "BankCode",
+      "html-target": "BankCode"
+    },
+    {
+      "value": "123456789123456",
+      "proxy-key": "CardNumber",
+      "html-target": "UserName"
+    },
+    {
+      "value": "0001User",
+      "proxy-key": "RequestId",
+      "html-target": "RequestId"
+    }
+  ]
+}

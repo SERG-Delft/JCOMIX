@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Affilier3Dsecure Form</title>
+</head>
+<body>
+<h3>Please submit the following form:</h3>
+<form method="post" action="Affilier3DsecureSevlet">
+<table>
+ <tr>
+ 	<td>User Name:</td>
+ 	<td><input name="UserName" type="text" title="User Name"/></td>
+ </tr>
+ <tr>
+ 	<td>Bank Code:</td>
+	<td><input name="BankCode" type="text" /></td>
+ </tr>
+ <tr>
+ 	<td>Request Id: </td>
+ 	<td><input name="RequestId" type="text" /></td>
+ </tr>
+ <tr>
+ 	<td>Card Number: </td>
+ 	<td><input name="CardNumber" type="text" /></td>
+ </tr>
+ <tr>
+ 	<td>WS connection type: </td>
+ 	<td>
+ 		<select name="ConnectionType">
+ 			<option value="HttpClient">HttpClient</option>
+ 			<option value="SOAP">SOAP</option> 
+ 		</select>
+ 	</td>
+ </tr>
+</table>
+<input name="submit" type="submit">
+</form>
+<hr>
+<span>
+Example of input:<br/>
+ UserName: 1234<br/>
+ BankCode: 0111<br/>
+ RequestId: 1423486877548UserNam<br/>
+ CardNumber: 1234567891234567891
+</span>
+
+</body>
+</html>
