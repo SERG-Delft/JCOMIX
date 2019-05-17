@@ -1,8 +1,8 @@
-# PTG
-##### Automatic penetration test generator.
+# JCOMIX
+##### a Search-based Tool to Detect Injection Vulnerabilities in Web Applications.
 
-[![build status](https://gitlab.com/tweet.dimitri/comix/badges/master/pipeline.svg)](https://gitlab.com/tweet.dimitri/comix/commits/master)
-[![coverage report](https://gitlab.com/tweet.dimitri/comix/badges/master/coverage.svg)](https://gitlab.com/tweet.dimitri/comix/commits/master)
+[![build status](https://gitlab.com/tweet.dimitri/JCOMIX/badges/master/pipeline.svg)](https://gitlab.com/tweet.dimitri/JCOMIX/commits/master)
+[![coverage report](https://gitlab.com/tweet.dimitri/JCOMIX/badges/master/coverage.svg)](https://gitlab.com/tweet.dimitri/JCOMIX/commits/master)
 
 This tool if used correctly will generate java test classes that use selenium to test penetrations on your web server.
 
