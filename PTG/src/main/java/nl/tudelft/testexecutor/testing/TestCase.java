@@ -34,7 +34,7 @@ public class TestCase {
             return;
         }
 
-        // TODO dimitri ~ i dont know about all these sanitatisations i dont like it
+        // TODO remove possibly
         String sanitized = value.replaceAll("\\s+", " ");
 
         int index = inputs.get(field).getSecond();

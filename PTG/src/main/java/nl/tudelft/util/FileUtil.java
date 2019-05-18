@@ -21,8 +21,9 @@ public final class FileUtil {
      *
      * @param f the path
      * @return the text of the file
+
      */
-    public static String readFile(File f) {
+    public static String readFile(File f, boolean readNewlines) {
         try {
             FileReader fileReader = new FileReader(f);
             BufferedReader reader = new BufferedReader(fileReader);
@@ -30,6 +31,9 @@ public final class FileUtil {
             String line = reader.readLine();
             while (line != null) {
                 builder.append(line);
+                if (readNewlines) {
+                    builder.append("\n");
+                }
                 line = reader.readLine();
             }
             reader.close();
@@ -48,7 +52,8 @@ public final class FileUtil {
      * @return      the normalized text of the file
      */
     public static String readAndNormalizeFile(File f) {
-        return readFile(f).replaceAll("\\s+", " ");
+        // TODO remove possibly
+        return readFile(f, false).replaceAll("\\s+", " ");
     }
 
     /**

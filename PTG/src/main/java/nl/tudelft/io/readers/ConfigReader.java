@@ -50,7 +50,7 @@ public final class ConfigReader {
         Map<String, String> config = new HashMap<>();
 
         try {
-            JSONObject jsonObject = new JSONObject(Objects.requireNonNull(FileUtil.readFile(file)));
+            JSONObject jsonObject = new JSONObject(Objects.requireNonNull(FileUtil.readFile(file, false)));
             ConfigReader.validateConfig(flagMap, jsonObject);
             Iterator<String> iterator = jsonObject.keys();
 

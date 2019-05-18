@@ -33,7 +33,7 @@ public class ToBuilder extends Program {
         List<Pair<String, Integer>> values = new ArrayList<>(ProxyReader.readServletEntries().values());
         values.sort(Comparator.comparingInt(Pair::getSecond));
 
-        String text = FileUtil.readFile(new File(ProxyReader.getExpectedOutputFilePath()));
+        String text = FileUtil.readFile(new File(ProxyReader.getExpectedOutputFilePath()), true);
 
         Map<String, String> map = builder.build(text, values);
 

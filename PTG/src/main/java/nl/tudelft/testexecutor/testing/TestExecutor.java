@@ -76,7 +76,7 @@ public class TestExecutor {
      * @return the sanitized string
      */
     private String sanitise(String dirtyString) {
-        // TODO again this weird sanitize shit i think that it should always be the users choice to do this, so not in this class
+        // TODO remove possibly
         return dirtyString.replaceAll("\\s+", " ");
     }
 }

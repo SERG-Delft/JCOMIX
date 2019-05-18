@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Builder {
 
@@ -104,6 +106,7 @@ public class Builder {
                 }
 
                 String modifiedString = modifier.modify(expectedOutput, targetAndReplacements);
+
                 try {
                     language.validate(modifiedString);
                 } catch (RuntimeException e) {
@@ -118,6 +121,4 @@ public class Builder {
         }
         return generatedTOs;
     }
-
-
 }

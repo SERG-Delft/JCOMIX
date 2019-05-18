@@ -13,7 +13,7 @@ public class TestObjective {
 
     private String fileName;
     private String toText;
-    private int insertLocation; // TODO dimitri
+    private int insertLocation;
 
     /**
      * Constructor.
@@ -27,7 +27,7 @@ public class TestObjective {
 
         assert this.toText != null;
 
-        // TODO weird sanitization again.
+        // TODO remove possibly
         this.toText = this.toText.replaceAll("\\s+", " ");
     }
 
