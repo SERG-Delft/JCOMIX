@@ -34,7 +34,7 @@ public class ReplicateNode implements LangNode {
             String matcher = targets.get(strings.get(i).getFirst());
 
             String[] parts = matcher.split(strings.get(i).getFirst());
-            System.out.println(Arrays.toString(parts));
+
             String forged = strings.get(i).getFirst() + parts[1] + " " + parts[0] + follow;
 
             for (int j = 0; j < strings.size(); j++) {

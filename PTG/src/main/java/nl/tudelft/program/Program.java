@@ -4,6 +4,8 @@ package nl.tudelft.program;
 import jga.solutions.Solution;
 import nl.tudelft.io.readers.ProxyReader;
 import nl.tudelft.io.readers.TestObjectiveReader;
+import nl.tudelft.io.writers.JUnitWriter;
+import nl.tudelft.io.writers.JestWriter;
 import nl.tudelft.proxy.HttpProcessor;
 import nl.tudelft.tobuilder.Pair;
 import nl.tudelft.io.*;
@@ -78,10 +80,7 @@ public class Program {
 
         Solution[] resultSet = runner.runGA();
 
-        TestWriter testWriter = new TestWriter(
-                getArgumentProcessor().getPropertyValue("test-save-path"),
-                getArgumentProcessor().getPropertyValue("chrome-driver-path"),
-                getArgumentProcessor().getPropertyValue("html-url"));
+        TestWriter testWriter = new JestWriter(getArgumentProcessor().getPropertyArgumentMap());
 
         StringBuilder solved = new StringBuilder("Solved: ");
         StringBuilder unSolved = new StringBuilder("Not solved: ");
