@@ -191,6 +191,12 @@ public class ArgumentProcessor {
 
         flagMap.put("-p", new Flag("to-read-path", "Set the path to the test objectives.", ".+"));
         flagMap.put("-f", new Flag("test-save-path", "Set the save path for the results.", ".+"));
+
+        Set<String> testLanguages = new HashSet<>();
+        testLanguages.add("jest");
+        testLanguages.add("junit");
+
+        flagMap.put("--test-lang", new Flag("test-output-language", "Set the output language of the program.", testLanguages));
         flagMap.put("-t", new Flag("time", "Set the max amount of time to run.", "[1-9][0-9]*([dhms])"));
         flagMap.put("-n", new Flag("inputs", "Set the amount of inputs to use.", "[1-9][0-9]*"));
         flagMap.put("-s", new Flag("population", "Set the population size.", "[1-9][0-9]*"));

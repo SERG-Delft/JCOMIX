@@ -80,7 +80,13 @@ public class Program {
 
         Solution[] resultSet = runner.runGA();
 
-        TestWriter testWriter = new JestWriter(getArgumentProcessor().getPropertyArgumentMap());
+        TestWriter testWriter;
+
+        if (getArgumentProcessor().getPropertyValue("test-output-language").equals("junit")) {
+            testWriter = new JUnitWriter(getArgumentProcessor().getPropertyArgumentMap());
+        } else {
+            testWriter = new JestWriter(getArgumentProcessor().getPropertyArgumentMap());
+        }
 
         StringBuilder solved = new StringBuilder("Solved: ");
         StringBuilder unSolved = new StringBuilder("Not solved: ");
