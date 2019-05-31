@@ -1,6 +1,5 @@
 package nl.tudelft.io.writers;
 
-import nl.tudelft.io.ImportsMapping;
 import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestObjective;
 import nl.tudelft.tobuilder.Pair;
@@ -9,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class JestWriter extends TestWriter {
@@ -21,6 +19,43 @@ public class JestWriter extends TestWriter {
      */
     public JestWriter(Map<String, String> properties) {
         super(properties);
+        try {
+            writePackageFile();
+        } catch (IOException e) {
+            // TODO
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method will write the package.json file needed to run the jest test suites.
+     *
+     * @throws IOException when the filepath is incorrect it will throw an IOException
+     */
+    public void writePackageFile() throws IOException {
+        String filePath = getProperties().get("test-save-path") + System.getProperty("file.separator") + "package.json";
+
+        File file = new File(filePath);
+        FileWriter fileWriter = new FileWriter(file, false);
+        BufferedWriter writer = new BufferedWriter(fileWriter);
+
+        String text = "{\n" +
+                "  \"name\": \"test\",\n" +
+                "  \"version\": \"1.0.0\",\n" +
+                "  \"description\": \"\",\n" +
+                "  \"scripts\": {\n" +
+                "    \"test\": \"jest\"\n" +
+                "  },\n" +
+                "  \"dependencies\": {\n" +
+                "    \"jest\": \"^24.8.0\",\n" +
+                "    \"jest-puppeteer\": \"^4.2.0\",\n" +
+                "    \"puppeteer\": \"^1.17.0\"\n" +
+                "  }\n" +
+                "}\n";
+
+        writer.write(text);
+
+        writer.close();
     }
 
     @Override

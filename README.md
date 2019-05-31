@@ -94,8 +94,19 @@ e.g. a webapp that uses json.
     * Change the `output-language`.
     * Change the `expected-output-path`.
 
+#### JUnit and Jest support
+Both Jest and JUnit test suites can be generated using this tool.
+This can be changed using the `test-suite` property
 
+###### JUnit
+To run the test suite do the following after the files have been generated
+* Use either your IDE or maven to run the tests
 
+###### Jest
+To run the test suite do the following after the files have been generated
+* `cd path/to/generated/tests`
+* `npm install`
+* `npm run test`
 
 #### Small arguments manual
 * Use the `-h` or `--help` flag to get the full manual

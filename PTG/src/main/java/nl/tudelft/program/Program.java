@@ -82,7 +82,7 @@ public class Program {
 
         TestWriter testWriter;
 
-        if (getArgumentProcessor().getPropertyValue("test-output-language").equals("junit")) {
+        if (getArgumentProcessor().getPropertyValue("test-suite").equals("junit")) {
             testWriter = new JUnitWriter(getArgumentProcessor().getPropertyArgumentMap());
         } else {
             testWriter = new JestWriter(getArgumentProcessor().getPropertyArgumentMap());
