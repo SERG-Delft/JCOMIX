@@ -45,7 +45,7 @@ public class SingleReporter extends Reporter implements Actor {
 
             double secondsLeft = millisLeft / 1000d;
 
-            double elapsedPercentage = (((timeDiff / 1000d)) / (secondsLeft + (timeDiff / 1000d))) * 100d;
+            double elapsedPercentage = (Math.log10((timeDiff / 1000d)) / Math.log10(secondsLeft + (timeDiff / 1000d))) * 100d;
 
             log.append("Estimated elapsed time: ")
                     .append(String.format("%.2f", elapsedPercentage))

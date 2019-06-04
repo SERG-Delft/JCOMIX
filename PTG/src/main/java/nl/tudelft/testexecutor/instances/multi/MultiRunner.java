@@ -8,6 +8,7 @@ import jga.operators.scoring.comparing.SingleObjectiveComparing;
 import jga.populations.MultiIndividualPopulation;
 import jga.populations.Population;
 import jga.solutions.Solution;
+import jga.utils.ExecutorPool;
 import nl.tudelft.factories.AlphabetFactory;
 import nl.tudelft.factories.PopulationFactory;
 import nl.tudelft.io.readers.ConfigReader;
@@ -132,6 +133,8 @@ public class MultiRunner extends GeneralRunner {
 
             resultSet[i] = new Solution<>(testCase, 0, best.getFitness()[best.getHierarchyPath()[0]]);
         }
+
+        ExecutorPool.getInstance().shutdown();
 
         return resultSet;
     }

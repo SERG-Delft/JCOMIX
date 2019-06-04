@@ -6,6 +6,7 @@ import jga.individuals.GrammarIndividual;
 import jga.individuals.Individual;
 import jga.populations.Population;
 import jga.solutions.Solution;
+import jga.utils.ExecutorPool;
 import nl.tudelft.factories.AlphabetFactory;
 import nl.tudelft.factories.PopulationFactory;
 import nl.tudelft.io.readers.ConfigReader;
@@ -130,6 +131,10 @@ public class SingleRunner extends GeneralRunner {
                 }
             }
 
+            if (unsolved.isEmpty()) {
+                break;
+            }
+
             int index = unsolved.remove(new Random().nextInt(unsolved.size()));
             TestObjective randomTO = getExperiment().getObjectives().get(index);
 
@@ -191,6 +196,8 @@ public class SingleRunner extends GeneralRunner {
                 LogUtil.getInstance().info("" + (timeTaken[index]) / 1000d);
             }
         }
+
+        ExecutorPool.getInstance().shutdown();
 
         return resultSet;
     }
