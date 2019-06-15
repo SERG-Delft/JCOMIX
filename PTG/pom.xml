@@ -121,6 +121,7 @@
                 <version>${maven.checkstyle.plugin}</version>
                 <configuration>
                     <configLocation>${project.parent.basedir}/checkstyle.xml</configLocation>
+                    <suppressionsLocation>${project.parent.basedir}/checkstyle-suppressions.xml</suppressionsLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <failOnViolation>true</failOnViolation>
                     <violationSeverity>warning</violationSeverity>
@@ -256,6 +257,7 @@
                 <version>${maven.checkstyle.plugin}</version>
                 <configuration>
                     <configLocation>${project.parent.basedir}/checkstyle.xml</configLocation>
+                    <suppressionsLocation>${project.parent.basedir}/checkstyle-suppressions.xml</suppressionsLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 </configuration>
             </plugin>

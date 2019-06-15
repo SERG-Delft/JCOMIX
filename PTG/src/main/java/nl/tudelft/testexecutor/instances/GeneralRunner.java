@@ -8,9 +8,11 @@ import jga.populations.Population;
 import jga.solutions.Solution;
 import jga.utils.ExecutorPool;
 import nl.tudelft.testexecutor.testing.Experiment;
+import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestExecutor;
 import nl.tudelft.testexecutor.testing.TestObjective;
 
+import java.util.List;
 import java.util.Map;
 
 import static nl.tudelft.util.TextToEnum.*;
@@ -80,6 +82,26 @@ public abstract class GeneralRunner {
      * @return the solutions the GA found
      */
     public abstract Solution[] runGA();
+
+    /**
+     * This method will generate a test case based on the given dna strain.
+     *
+     * @param dna the dna strain
+     * @return the generated test case
+     */
+    public TestCase generateTestCase(List<List<Character>> dna) {
+        TestCase testCase = new TestCase(getExperiment().getProxyEntries());
+
+        for (int j = 0; j < dna.size(); j++) {
+            StringBuilder solution = new StringBuilder();
+            for (Character gene : dna.get(j)) {
+                solution.append(gene);
+            }
+            testCase.setInputField(j, solution.toString());
+        }
+
+        return testCase;
+    }
 
     /**
      * Gets the executor object.

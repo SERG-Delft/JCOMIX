@@ -11,6 +11,7 @@ package nl.tudelft.testexecutor;
  *
  * http://algs4.cs.princeton.edu/55compression/Alphabet.java.html
  *************************************************************************/
+@SuppressWarnings("PMD")
 public class Alphabet {
 
     private AlphabetType type;

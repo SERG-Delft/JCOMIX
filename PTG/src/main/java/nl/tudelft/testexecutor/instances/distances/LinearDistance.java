@@ -3,7 +3,8 @@ package nl.tudelft.testexecutor.instances.distances;
 import nl.tudelft.testexecutor.Alphabet;
 
 // some code taken from http://people.cs.pitt.edu/~kirk/cs1501/Pruhs/Fall2006/Assignments/editdistance/Levenshtein%20Distance.htm
-public class LinearDistance extends IStringDistance {
+@SuppressWarnings("PMD")
+public class LinearDistance extends StringDistance {
 
     public LinearDistance(Alphabet alphabet) {
         super(alphabet);
@@ -16,6 +17,7 @@ public class LinearDistance extends IStringDistance {
     // *****************************
     // Compute a real-coded version of the Levenshtein distance
     // *****************************
+    @Override
     public double distance(String s, String t) {
         char s_i; // ith character of s
         char t_j; // jth character of t

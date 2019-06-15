@@ -7,9 +7,9 @@ package nl.tudelft.util;
  */
 public final class Constants {
 
-    public final static double MILLIS_PER_MINUTE = 60d * 1000d;
-    public final static double MILLIS_PER_SEC = 1000d;
-    public final static double TO_PERCENT_SCALE = 100d;
+    public static final double MILLIS_PER_MINUTE = 60d * 1000d;
+    public static final double MILLIS_PER_SEC = 1000d;
+    public static final double TO_PERCENT_SCALE = 100d;
 
     /**
      * As this class is final its constructor should be private.

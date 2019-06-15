@@ -4,7 +4,7 @@ import jga.individuals.Individual;
 import jga.problems.Problem;
 import nl.tudelft.testexecutor.Alphabet;
 import nl.tudelft.testexecutor.AlphabetType;
-import nl.tudelft.testexecutor.instances.distances.IStringDistance;
+import nl.tudelft.testexecutor.instances.distances.StringDistance;
 import nl.tudelft.testexecutor.instances.distances.RealCodedEditDistance;
 import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.testexecutor.testing.TestCase;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SingleProblem implements Problem<List<List<Character>>, TestObjective, String> {
 
 
-    private IStringDistance stringDistance;
+    private StringDistance stringDistance;
 
     private TestExecutor executor;
     private Experiment experiment;

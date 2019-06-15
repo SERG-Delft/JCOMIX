@@ -115,23 +115,13 @@ public class MultiRunner extends GeneralRunner {
         for (int i = 0; i < population.size(); i++) {
             GrammarIndividual<Character, List<TestObjective>, String> best =
                     (GrammarIndividual<Character, List<TestObjective>, String>) population.get(i).get(0);
-            List<List<Character>> dnaList = best.getDNA();
 
-            TestCase testCase = new TestCase(getExperiment().getProxyEntries());
-
-            for (int j = 0; j < dnaList.size(); j++) {
-                StringBuilder solution = new StringBuilder();
-                for (Character ch : dnaList.get(j)) {
-                    solution.append(ch);
-                }
-                testCase.setInputField(j, solution.toString());
-            }
+            TestCase testCase = generateTestCase(best.getDNA());
 
             resultSet[i] = new Solution<>(testCase, 0, best.getFitness()[best.getHierarchyPath()[0]]);
         }
 
         ExecutorPool.getInstance().shutdown();
-
         return resultSet;
     }
 }

@@ -12,7 +12,6 @@ import nl.tudelft.io.readers.ConfigReader;
 import nl.tudelft.io.LogUtil;
 import nl.tudelft.testexecutor.instances.GeneralRunner;
 import nl.tudelft.testexecutor.testing.Experiment;
-import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestExecutor;
 import nl.tudelft.testexecutor.testing.TestObjective;
 import nl.tudelft.util.Constants;
@@ -83,7 +82,6 @@ public class SingleRunner extends GeneralRunner {
     public Solution[] runGA() {
         long last = System.currentTimeMillis();
         double totalTime = ConfigReader.readTimeToMinutes(getProperties().get("time"));
-
         double timePerTo = 0;
 
         Solution[] resultSet = new Solution[getExperiment().getObjectives().size()];
@@ -96,20 +94,12 @@ public class SingleRunner extends GeneralRunner {
         }
 
         while (System.currentTimeMillis() - last < totalTime * Constants.MILLIS_PER_MINUTE) {
-
             if (unsolved.isEmpty()) {
-                for (int i = 0; i < populations.length; i++) {
-                    if (populations[i] != null) {
-                        unsolved.add(i);
-                    }
-                }
-
-                double timeLeft = (totalTime - ((System.currentTimeMillis() - last) / Constants.MILLIS_PER_MINUTE));
+                reAddUnsolved(populations, unsolved);
+                timePerTo = (totalTime - ((System.currentTimeMillis() - last) / Constants.MILLIS_PER_MINUTE));
 
                 if (getProperties().get("budgeting").matches("true")) {
-                    timePerTo = timeLeft / ((double) unsolved.size());
-                } else {
-                    timePerTo = timeLeft;
+                    timePerTo = timePerTo / ((double) unsolved.size());
                 }
             }
 
@@ -118,16 +108,20 @@ public class SingleRunner extends GeneralRunner {
                 break;
             }
 
-
             int index = unsolved.remove(new Random().nextInt(unsolved.size()));
-
             executeOne(index, populations, timePerTo, resultSet, timeTaken);
-
         }
 
         ExecutorPool.getInstance().shutdown();
-
         return resultSet;
+    }
+
+    private void reAddUnsolved(Population[] populations, List<Integer> unsolved) {
+        for (int i = 0; i < populations.length; i++) {
+            if (populations[i] != null) {
+                unsolved.add(i);
+            }
+        }
     }
 
     private void executeOne(int index, Population[] populations, double timePerTo, Solution[] resultSet, long[] timeTaken) {
@@ -159,20 +153,6 @@ public class SingleRunner extends GeneralRunner {
         } else {
             reportProgress(randomTO, dna, timeTaken[index], "Not Solved");
         }
-    }
-
-    private TestCase generateTestCase(List<List<Character>> dna) {
-        TestCase testCase = new TestCase(getExperiment().getProxyEntries());
-
-        for (int j = 0; j < dna.size(); j++) {
-            StringBuilder solution = new StringBuilder();
-            for (Character gene : dna.get(j)) {
-                solution.append(gene);
-            }
-            testCase.setInputField(j, solution.toString());
-        }
-
-        return testCase;
     }
 
     private void reportProgress(TestObjective to, List<List<Character>> dna, long totalTime, String text) {

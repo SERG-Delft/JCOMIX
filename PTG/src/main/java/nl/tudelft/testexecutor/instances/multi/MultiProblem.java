@@ -6,7 +6,7 @@ import jga.problems.Problem;
 import nl.tudelft.io.LogUtil;
 import nl.tudelft.testexecutor.Alphabet;
 import nl.tudelft.testexecutor.AlphabetType;
-import nl.tudelft.testexecutor.instances.distances.IStringDistance;
+import nl.tudelft.testexecutor.instances.distances.StringDistance;
 import nl.tudelft.testexecutor.instances.distances.RealCodedEditDistance;
 import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.testexecutor.testing.TestCase;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MultiProblem implements Problem<List<List<Character>>, List<TestObjective>, String> {
 
-    private IStringDistance stringDistance;
+    private StringDistance stringDistance;
 
     private TestExecutor executor;
     private Experiment experiment;

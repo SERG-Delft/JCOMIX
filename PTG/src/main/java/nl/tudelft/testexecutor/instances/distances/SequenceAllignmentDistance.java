@@ -2,8 +2,18 @@ package nl.tudelft.testexecutor.instances.distances;
 
 import nl.tudelft.testexecutor.Alphabet;
 
-public class SequenceAllignmentDistance extends IStringDistance {
+/**
+ * This class implements the sequence alignment distance metric.
+ *
+ * @author Dimitri Stallenberg
+ */
+public class SequenceAllignmentDistance extends StringDistance {
 
+    /**
+     * Constructor.
+     *
+     * @param alphabet the used alphabet
+     */
     public SequenceAllignmentDistance(Alphabet alphabet) {
         super(alphabet);
     }

@@ -276,7 +276,7 @@ public class ArgumentProcessor {
             x.append(s).append(" : ").append(flag.toString());
         }
 
-        System.out.println(x.toString());
+        LogUtil.getInstance().info(x.toString());
     }
 
     /**
