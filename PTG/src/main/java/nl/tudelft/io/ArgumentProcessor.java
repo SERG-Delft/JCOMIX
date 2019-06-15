@@ -239,9 +239,11 @@ public class ArgumentProcessor {
         flagMap.put("-b", new Flag("budgeting", "Set the budgeting option."));
 
         flagMap.put("-sm", new Flag("use-stall-manager", "Set the stall manager option."));
-        flagMap.put("-ra", new Flag("use-result-actor", "Set the result actor option."));
+        flagMap.put("-msg", new Flag("max-stalled-generations", "Set the maximum amount of stalled generations", "[1-9][0-9]*"));
+
         flagMap.put("-ma", new Flag("use-migration-actor", "Set the migration actor option."));
 
+        flagMap.put("-icl", new Flag("initial-chromosome-length", "Set the initial length of the chromosomes", "[1-9][0-9]*"));
 
         return flagMap;
     }

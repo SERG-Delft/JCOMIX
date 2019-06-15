@@ -4,10 +4,12 @@ import jga.actors.Actor;
 import jga.actors.Reporter;
 import jga.environments.Environment;
 import jga.individuals.Individual;
+import jga.populations.IndividualPopulation;
 import jga.populations.MultiIndividualPopulation;
 import jga.populations.Population;
 import nl.tudelft.io.LogUtil;
 import nl.tudelft.testexecutor.testing.Experiment;
+import nl.tudelft.util.Constants;
 
 import java.util.Comparator;
 import java.util.List;
@@ -47,8 +49,8 @@ public class MultiReporter extends Reporter implements Actor {
 
     @Override
     public void reportFunction() {
-        StringBuilder information = new StringBuilder("\n");
-        information.append("Stage: ")
+        StringBuilder report = new StringBuilder("\n");
+        report.append("Stage: ")
                 .append(getEnvironment().getStage())
                 .append("\n");
 
@@ -64,6 +66,19 @@ public class MultiReporter extends Reporter implements Actor {
             previousScores = currentScores.clone();
         }
 
+        reportToInformation(report, currentScores);
+
+        reportGeneralInformation(report, currentScores);
+
+        LogUtil.getInstance().info(report.toString());
+
+        prevGen = getEnvironment().getGen();
+        prevReport = System.currentTimeMillis();
+        previousScores = currentScores.clone();
+        // TODO
+    }
+
+    private void reportToInformation(StringBuilder report, double[] currentScores) {
         double[] improvement = new double[currentScores.length];
 
         for (int i = 0; i < currentScores.length; i++) {
@@ -71,7 +86,7 @@ public class MultiReporter extends Reporter implements Actor {
         }
 
         for (int i = 0; i < currentScores.length; i++) {
-            information.append(i)
+            report.append(i)
                     .append(" : ")
                     .append(experiment.getObjectives().get(i).getFileName())
                     .append(" : fitness: ")
@@ -82,16 +97,13 @@ public class MultiReporter extends Reporter implements Actor {
                     .append(solutions[i])
                     .append("\n");
         }
+    }
 
-        final double millisPerSec = 1000d;
+    private void reportGeneralInformation(StringBuilder report, double[] currentScores) {
+        double avgGenPerSec = ((double) getEnvironment().getGen()) / ((System.currentTimeMillis() - startTime) / Constants.MILLIS_PER_SEC);
+        double genPerSec = ((double) (getEnvironment().getGen() - prevGen)) / ((System.currentTimeMillis() - prevReport) / Constants.MILLIS_PER_SEC);
 
-        double avgGenPerSec = ((double) getEnvironment().getGen()) / ((System.currentTimeMillis() - startTime) / millisPerSec);
-        double genPerSec = ((double) (getEnvironment().getGen() - prevGen)) / ((System.currentTimeMillis() - prevReport) / millisPerSec);
-
-        prevGen = getEnvironment().getGen();
-        prevReport = System.currentTimeMillis();
-
-        information.append("Generation: ")
+        report.append("Generation: ")
                 .append(getEnvironment().getGen())
                 .append("\n")
                 .append("Correct: ")
@@ -100,18 +112,13 @@ public class MultiReporter extends Reporter implements Actor {
                 .append(currentScores.length)
                 .append("\n")
                 .append("Time: ")
-                .append((System.currentTimeMillis() - startTime) / millisPerSec)
+                .append((System.currentTimeMillis() - startTime) / Constants.MILLIS_PER_SEC)
                 .append("\n")
                 .append("Generations per second: ")
                 .append(String.format("%.1f", genPerSec))
                 .append("\n")
                 .append("Average generations per second: ")
                 .append(String.format("%.1f", avgGenPerSec));
-
-        LogUtil.getInstance().info(information.toString());
-
-        previousScores = currentScores.clone();
-        // TODO
     }
 
     @Override
@@ -125,39 +132,45 @@ public class MultiReporter extends Reporter implements Actor {
         correctCount = 0;
 
         for (int i = 0; i < current.size(); i++) {
-            current.get(i).sort(Comparator.comparingInt(Individual::getScore));
+            IndividualPopulation individuals = current.get(i);
 
-            double[] fitness = current.get(i).get(0).getFitness();
-            int[] hierarchy = current.get(i).get(0).getHierarchyPath();
+            individuals.sort(Comparator.comparingInt(Individual::getScore));
+
+            double[] fitness = individuals.get(0).getFitness();
+            int[] hierarchy = individuals.get(0).getHierarchyPath();
 
             if (hierarchy[0] != i) {
                 throw new IllegalStateException("Hierarchy tree of individual is incorrect!");
             }
 
-            newscores[i] = fitness[i]; // TODO make argument or something
+            newscores[i] = fitness[i];
 
             if (newscores[i] == 1) {
                 correctCount++;
             }
 
-            List<List<Character>> dnaList = (List<List<Character>>) current.get(i).get(0).getDNA();
-            StringBuilder dnaString = new StringBuilder();
-
-            for (List<Character> characters : dnaList) {
-                for (Character character : characters) {
-                    dnaString.append(character);
-                }
-                dnaString.append("\t");
-            }
-            newSolutions[i] = dnaString.toString();
+            newSolutions[i] = getDnaString(individuals.get(0));
         }
 
         scores = newscores;
         solutions = newSolutions;
 
-
         if (correctCount == scores.length) {
             environment.setSolutionFoundFlag(true);
         }
+    }
+
+    private String getDnaString(Individual individual) {
+        List<List<Character>> dna = (List<List<Character>>) individual.getDNA();
+        StringBuilder dnaString = new StringBuilder();
+
+        for (List<Character> chromosome : dna) {
+            for (Character gene : chromosome) {
+                dnaString.append(gene);
+            }
+            dnaString.append("\t");
+        }
+
+        return dnaString.toString();
     }
 }

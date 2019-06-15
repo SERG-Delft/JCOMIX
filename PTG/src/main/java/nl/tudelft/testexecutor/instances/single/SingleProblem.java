@@ -13,6 +13,11 @@ import nl.tudelft.testexecutor.testing.TestObjective;
 
 import java.util.List;
 
+/**
+ * This class represents the problem for the single objective environment to solve.
+ *
+ *  @author Dimitri Stallenberg
+ */
 public class SingleProblem implements Problem<List<List<Character>>, TestObjective, String> {
 
 
@@ -21,6 +26,12 @@ public class SingleProblem implements Problem<List<List<Character>>, TestObjecti
     private TestExecutor executor;
     private Experiment experiment;
 
+    /**
+     * Constructor.
+     *
+     * @param executor          the TestExecutor object to run the tests on
+     * @param experiment        the Experiment object
+     */
     public SingleProblem(TestExecutor executor, Experiment experiment) {
         this.executor = executor;
         this.experiment = experiment;
@@ -30,7 +41,7 @@ public class SingleProblem implements Problem<List<List<Character>>, TestObjecti
 
     @Override
     public String process(Individual individual, List<List<Character>> strings, TestObjective object) {
-        TestCase testCase = new TestCase(experiment.getServletEntries());
+        TestCase testCase = new TestCase(experiment.getProxyEntries());
 
         for (int j = 0; j < strings.size(); j++) {
             StringBuilder solution = new StringBuilder();

@@ -41,7 +41,9 @@ public abstract class GeneralRunner {
         this.experiment = experiment;
         this.properties = properties;
 
-        ExecutorPool.setNumThreads(4);
+        final int amountOfThreads = 4; // TODO make this a property
+
+        ExecutorPool.setNumThreads(amountOfThreads);
 
         environment = buildEnvironment(properties);
     }

@@ -10,6 +10,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * This class implements a test writer for a jest test suite.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class JestWriter extends TestWriter {
 
     /**

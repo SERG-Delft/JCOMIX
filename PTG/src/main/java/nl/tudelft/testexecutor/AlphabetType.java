@@ -2,6 +2,11 @@ package nl.tudelft.testexecutor;
 
 import java.util.EnumMap;
 
+/**
+ * This enum class contains an enum map that converts ENUMs to alphabet objects.
+ *
+ * @author Dimitri Stallenberg
+ */
 public enum AlphabetType {
 
     BINARY, OCTAL, DECIMAL, HEXADECIMAL, DNA, LOWERCASE, UPPERCASE, PROTEIN, BASE64, ASCII, EXTENDED_ASCII, UNICODE16, RESTRICTED, UNRESTRICTED;

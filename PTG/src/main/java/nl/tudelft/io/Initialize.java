@@ -3,13 +3,8 @@ package nl.tudelft.io;
 import nl.tudelft.util.FileUtil;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 
 import static nl.tudelft.io.DirectoryUtil.getCurrentWorkingDirectory;
-import static nl.tudelft.util.FileUtil.getFileFromResources;
 
 /**
  * This class will initialize the proxy and config files.

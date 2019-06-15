@@ -5,6 +5,11 @@ import nl.tudelft.io.LogUtil;
 import java.io.*;
 import java.net.URL;
 
+/**
+ * This final class contains several utility functions for reading/writing/copying files.
+ *
+ * @author Dimitri Stallenberg
+ */
 public final class FileUtil {
 
     /**
@@ -19,7 +24,8 @@ public final class FileUtil {
     /**
      * Read a text file as-is.
      *
-     * @param f the path
+     * @param f             the path
+     * @param readNewlines  whether the function should also take new-lines into account
      * @return the text of the file
 
      */
@@ -99,7 +105,13 @@ public final class FileUtil {
 
     }
 
-    public static void copyFile(String source, String target){
+    /**
+     * This method will copy a file from the given source to the target.
+     *
+     * @param source    the source file path
+     * @param target    the target file path
+     */
+    public static void copyFile(String source, String target) {
         InputStream inputStream = FileUtil.class.getClassLoader().getResourceAsStream(source);
         try {
             FileOutputStream outputStream = new FileOutputStream(target);

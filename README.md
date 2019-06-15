@@ -183,9 +183,6 @@ Must be true or false.
 Note: only works when using a multi environment
 Must be true or false.
 
-* use-result-actor: whether to use the result actor  
-Must be true or false.
-
 
 ## Developing Custom Extensions
 This tool has been developed to allow for a lot of extension.

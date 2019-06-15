@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * This utility class translates strings to enums that can be used by the factory classes of JGA.
+ *
+ * @author Dimitri Stallenberg
  */
 public final class TextToEnum {
 

@@ -7,10 +7,16 @@ import jga.individuals.Individual;
 import jga.populations.IndividualPopulation;
 import jga.populations.Population;
 import nl.tudelft.io.LogUtil;
+import nl.tudelft.util.Constants;
 
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * This class represents the reporter for the single objective environment.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class SingleReporter extends Reporter implements Actor {
 
     private String objectiveName;
@@ -20,6 +26,13 @@ public class SingleReporter extends Reporter implements Actor {
 
     private String solution;
 
+    /**
+     * Constructor.
+     *
+     * @param environment       the environment the reporter reports on
+     * @param reportingInterval the interval the reporter should report on
+     * @param objectiveName     the name of the objective the reporter reports on
+     */
     public SingleReporter(Environment environment, double reportingInterval, String objectiveName) {
         super(environment, reportingInterval);
         this.objectiveName = objectiveName;
@@ -33,26 +46,11 @@ public class SingleReporter extends Reporter implements Actor {
 
         StringBuilder log = new StringBuilder()
                 .append("Time passed: ")
-                .append((System.currentTimeMillis() - getStartTime()) / 1000d)
+                .append((System.currentTimeMillis() - getStartTime()) / Constants.MILLIS_PER_SEC)
                 .append(" seconds\n");
 
         if (score != -1 && startScore != score) {
-            long timeDiff = (System.currentTimeMillis() - getStartTime());
-            double fitnessDiff = score - startScore;
-            double fitnessPerMilli = fitnessDiff / ((double) timeDiff);
-
-            double millisLeft = (1 - score) / fitnessPerMilli;
-
-            double secondsLeft = millisLeft / 1000d;
-
-            double elapsedPercentage = (Math.log10((timeDiff / 1000d)) / Math.log10(secondsLeft + (timeDiff / 1000d))) * 100d;
-
-            log.append("Estimated elapsed time: ")
-                    .append(String.format("%.2f", elapsedPercentage))
-                    .append(" %\n")
-                    .append("Estimated time left: ")
-                    .append(String.format("%.2f", secondsLeft))
-                    .append(" seconds\n");
+            calculateTimings(log);
         }
 
         log.append(objectiveName)
@@ -67,6 +65,28 @@ public class SingleReporter extends Reporter implements Actor {
         LogUtil.getInstance().info(log.toString());
     }
 
+    private void calculateTimings(StringBuilder log) {
+        long timeDiff = (System.currentTimeMillis() - getStartTime());
+        double fitnessDiff = score - startScore;
+        double fitnessPerMilli = fitnessDiff / ((double) timeDiff);
+
+        double millisLeft = (1 - score) / fitnessPerMilli;
+
+        double secondsLeft = millisLeft / Constants.TO_PERCENT_SCALE;
+
+        double elapsedPercentage =
+                (Math.log10((timeDiff / Constants.MILLIS_PER_SEC))
+                        / Math.log10(secondsLeft + (timeDiff / Constants.MILLIS_PER_SEC)))
+                        * Constants.TO_PERCENT_SCALE;
+
+        log.append("Estimated elapsed time: ")
+                .append(String.format("%.2f", elapsedPercentage))
+                .append(" %\n")
+                .append("Estimated time left: ")
+                .append(String.format("%.2f", secondsLeft))
+                .append(" seconds\n");
+    }
+
     @Override
     public void act(Environment environment, Population population) {
         IndividualPopulation current = population.toIndividualPopulation();
@@ -77,17 +97,21 @@ public class SingleReporter extends Reporter implements Actor {
 
         double newScore = fitness[0];
 
-        List<List<Character>> DNA = (List<List<Character>>) current.get(0).getDNA();
-        StringBuilder dna = new StringBuilder();
+        List<List<Character>> chromosomes = (List<List<Character>>) current.get(0).getDNA();
+        StringBuilder dnaString = new StringBuilder();
 
-        for (List<Character> characters : DNA) {
-            for (Character character : characters) {
-                dna.append(character);
+        for (List<Character> chromosome : chromosomes) {
+            for (Character gene : chromosome) {
+                dnaString.append(gene);
             }
-            dna.append("\t");
+            dnaString.append("\t");
         }
 
         score = newScore;
-        solution = dna.toString();
+        solution = dnaString.toString();
+
+        if (score == 1) {
+            environment.setSolutionFoundFlag(true);
+        }
     }
 }

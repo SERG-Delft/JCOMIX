@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class implements a test writer for a junit test suite.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class JUnitWriter extends TestWriter {
 
     /**

@@ -49,7 +49,7 @@ public class MultiProblem implements Problem<List<List<Character>>, List<TestObj
 
     @Override
     public String process(Individual individual, List<List<Character>> strings, List<TestObjective> objectives) {
-        TestCase testCase = new TestCase(experiment.getServletEntries());
+        TestCase testCase = new TestCase(experiment.getProxyEntries());
 
         int mainTo = individual.getHierarchyPath()[0]; // TODO replace 0 by hierarchy index as argument for the constructor
         TestObjective to = objectives.get(mainTo);

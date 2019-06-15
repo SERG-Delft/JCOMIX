@@ -14,7 +14,7 @@ import java.util.Map;
 public class Experiment {
 
     private List<TestObjective> objectives;
-    private Map<String, Pair<String, Integer>> servletEntries;
+    private Map<String, Pair<String, Integer>> proxyEntries;
 
     private long startTime;
 
@@ -22,11 +22,11 @@ public class Experiment {
      * Constructor.
      *
      * @param objectives      the list of objectives to run in this experiment
-     * @param servletEntries the Map of standard entries for the objectives
+     * @param proxyEntries the Map of standard entries for the objectives
      */
-    public Experiment(List<TestObjective> objectives, Map<String, Pair<String, Integer>> servletEntries) {
+    public Experiment(List<TestObjective> objectives, Map<String, Pair<String, Integer>> proxyEntries) {
         this.objectives = objectives;
-        this.servletEntries = servletEntries;
+        this.proxyEntries = proxyEntries;
 
         this.startTime = System.currentTimeMillis();
     }
@@ -54,7 +54,7 @@ public class Experiment {
      *
      * @return the map of standard entries
      */
-    public Map<String, Pair<String, Integer>> getServletEntries() {
-        return servletEntries;
+    public Map<String, Pair<String, Integer>> getProxyEntries() {
+        return proxyEntries;
     }
 }

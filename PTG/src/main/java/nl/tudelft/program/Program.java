@@ -1,6 +1,5 @@
 package nl.tudelft.program;
 
-
 import jga.solutions.Solution;
 import nl.tudelft.io.readers.ProxyReader;
 import nl.tudelft.io.readers.TestObjectiveReader;
@@ -14,6 +13,7 @@ import nl.tudelft.testexecutor.instances.GeneralRunner;
 import nl.tudelft.testexecutor.instances.multi.MultiRunner;
 import nl.tudelft.testexecutor.instances.single.SingleRunner;
 import nl.tudelft.testexecutor.testing.*;
+import nl.tudelft.util.Constants;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -47,13 +47,13 @@ public class Program {
         List<TestObjective> testObjectives = reader.readTestObjectives();
         testObjectives.sort(Comparator.comparing(TestObjective::getFileName));
 
-        Map<String, Pair<String, Integer>> servletEntries = ProxyReader.readServletEntries();
+        Map<String, Pair<String, Integer>> proxyEntries = ProxyReader.readProxyEntries();
 
         HttpProcessor processor = new HttpProcessor(
                 getArgumentProcessor().getPropertyValue("proxy-url"),
                 getArgumentProcessor().getPropertyValue("connection"));
 
-        Experiment experiment = new Experiment(testObjectives, servletEntries);
+        Experiment experiment = new Experiment(testObjectives, proxyEntries);
 
         startRunner(processor, experiment);
     }
@@ -88,12 +88,23 @@ public class Program {
             testWriter = new JestWriter(getArgumentProcessor().getPropertyArgumentMap());
         }
 
+        for (int i = 0; i < resultSet.length; i++) {
+            try {
+                testWriter.writeTest(experiment.getObjectives().get(i), (TestCase) resultSet[i].getSolution());
+            } catch (IOException e) {
+                // TODO
+                e.printStackTrace();
+            }
+        }
+
+        logFinalReport(resultSet, last);
+    }
+
+    private void logFinalReport(Solution[] resultSet, long last) {
         StringBuilder solved = new StringBuilder("Solved: ");
         StringBuilder unSolved = new StringBuilder("Not solved: ");
 
         StringBuilder overview = new StringBuilder();
-
-        final double millisPerSecond = 1000d;
 
         for (int i = 0; i < resultSet.length; i++) {
             if (resultSet[i] == null) {
@@ -107,28 +118,18 @@ public class Program {
                     .append("\t fitness: ")
                     .append(resultSet[i].getFitness())
                     .append("\t time: ")
-                    .append((resultSet[i].getTime() / millisPerSecond))
+                    .append((resultSet[i].getTime() / Constants.MILLIS_PER_SEC))
                     .append("\n");
 
             if (resultSet[i].getFitness() != 1) {
-                unSolved.append(i)
-                        .append("\t");
+                unSolved.append("\t").append(i);
                 continue;
             }
 
-            solved.append(i)
-                    .append("\t");
-
-            try {
-                testWriter.writeTest(experiment.getObjectives().get(i), (TestCase) resultSet[i].getSolution());
-            } catch (IOException e) {
-                // TODO
-                e.printStackTrace();
-            }
+            solved.append("\t").append(i);
         }
 
-        overview.append("Total time: ")
-                .append((System.currentTimeMillis() - last));
+        overview.append("Total time: ").append((System.currentTimeMillis() - last));
 
         solved.append("\n")
                 .append(unSolved)

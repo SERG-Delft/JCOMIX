@@ -11,6 +11,7 @@ import nl.tudelft.testexecutor.testing.TestObjective;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class is an implementation of an actor.
@@ -26,10 +27,18 @@ public class MultiStallManager implements Actor {
     private int[] stalledGens;
 
     private List<TestObjective> objectives;
+    private Map<String, String> properties;
 
-    public MultiStallManager(List<TestObjective> objectives) {
-        stalledGens = new int[objectives.size()];
+    /**
+     * Constructor.
+     *
+     * @param objectives the list of test objectives
+     * @param properties the properties dictionary
+     */
+    public MultiStallManager(List<TestObjective> objectives, Map<String, String> properties) {
+        this.stalledGens = new int[objectives.size()];
         this.objectives = objectives;
+        this.properties = properties;
     }
 
     @Override
@@ -45,6 +54,14 @@ public class MultiStallManager implements Actor {
             return;
         }
 
+        updateStalledGens(environment, actual);
+
+        resetStalledPopulations(actual);
+
+        previous = actual.deepCopy();
+    }
+
+    private void updateStalledGens(Environment environment, MultiIndividualPopulation actual) {
         for (int i = 0; i < actual.size(); i++) {
             if (environment.getSkipList().contains(i)) {
                 stalledGens[i] = 0;
@@ -66,9 +83,13 @@ public class MultiStallManager implements Actor {
                 stalledGens[i] = 0;
             }
         }
+    }
+
+    private void resetStalledPopulations(MultiIndividualPopulation actual) {
+        int maxStalledGenerations = Integer.parseInt(properties.get("max-stalled-generations"));
 
         for (int i = 0; i < stalledGens.length; i++) {
-            if (stalledGens[i] > 1000) { // TODO make this value a property
+            if (stalledGens[i] > maxStalledGenerations) {
                 LogUtil.getInstance().info("Reset island: " + i);
 
                 // Reset this island
@@ -78,7 +99,7 @@ public class MultiStallManager implements Actor {
 
                     int[] dnaSizes = new int[((List) individual.getDNA()).size()];
                     for (int k = 0; k < dnaSizes.length; k++) {
-                        dnaSizes[k] = 10; // TODO make this value a property
+                        dnaSizes[k] = Integer.parseInt(properties.get("initial-chromosome-length"));
                     }
 
                     individual.setDNA(individual.generateDNA(dnaSizes));
@@ -88,7 +109,5 @@ public class MultiStallManager implements Actor {
                 actual.set(i, newIsland);
             }
         }
-
-        previous = actual.deepCopy();
     }
 }

@@ -47,12 +47,12 @@ public final class ProxyReader {
 
 
     /**
-     * This method reads the servlet entries template file.
+     * This method reads the proxy entries template file.
      *
      * @return a ordered mapping between fields and standard values
      */
-    public static Map<String, Pair<String, Integer>> readServletEntries() {
-        Map<String, Pair<String, Integer>> servletEntries = new HashMap<>();
+    public static Map<String, Pair<String, Integer>> readProxyEntries() {
+        Map<String, Pair<String, Integer>> proxyEntries = new HashMap<>();
 
         try {
             JSONObject jsonObject = new JSONObject(FileUtil.readAndNormalizeFile(file));
@@ -63,14 +63,14 @@ public final class ProxyReader {
                 String key = object.getString("proxy-key");
                 String value = object.getString("value");
 
-                servletEntries.put(key, new Pair<>(value, i));
+                proxyEntries.put(key, new Pair<>(value, i));
             }
         } catch (JSONException e) {
             // TODO
             e.printStackTrace();
         }
 
-        return servletEntries;
+        return proxyEntries;
     }
 
     /**

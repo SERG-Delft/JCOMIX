@@ -31,9 +31,12 @@ public final class LogUtil {
      * @return the created logger
      */
     private static Logger makeLogger() {
+        String currentDirectory = DirectoryUtil.getCurrentWorkingDirectory();
+        String separator = System.getProperty("file.separator");
+
         Logger newLogger = Logger.getLogger("Global");
 
-        File logsDir = new File(DirectoryUtil.getCurrentWorkingDirectory() + System.getProperty("file.separator") + "logs");
+        File logsDir = new File(currentDirectory + separator + "logs");
         if (!logsDir.exists()) {
             if (!logsDir.mkdir()) {
                 newLogger.log(Level.SEVERE, "Failed to create the log folder");
@@ -41,10 +44,14 @@ public final class LogUtil {
         }
 
         try {
-            Handler fileHandler = new FileHandler(DirectoryUtil.getCurrentWorkingDirectory() + System.getProperty("file.separator") + "logs" + System.getProperty("file.separator") + "all.log");
-            Handler developerFileHandler = new FileHandler(DirectoryUtil.getCurrentWorkingDirectory() + System.getProperty("file.separator") + "logs" + System.getProperty("file.separator") + "dev.log");
-            Handler infoFileHandler = new FileHandler(DirectoryUtil.getCurrentWorkingDirectory() + System.getProperty("file.separator") + "logs" + System.getProperty("file.separator") + "info.log");
-            Handler errorFileHandler = new FileHandler(DirectoryUtil.getCurrentWorkingDirectory() + System.getProperty("file.separator") + "logs" + System.getProperty("file.separator") + "error.log");
+            Handler fileHandler = new FileHandler(
+                    currentDirectory + separator + "logs" + separator + "all.log");
+            Handler developerFileHandler = new FileHandler(
+                    currentDirectory + separator + "logs" + separator + "dev.log");
+            Handler infoFileHandler = new FileHandler(
+                    currentDirectory + separator + "logs" + separator + "info.log");
+            Handler errorFileHandler = new FileHandler(
+                    currentDirectory + separator + "logs" + separator + "error.log");
 
             newLogger.addHandler(fileHandler);
             newLogger.addHandler(developerFileHandler);

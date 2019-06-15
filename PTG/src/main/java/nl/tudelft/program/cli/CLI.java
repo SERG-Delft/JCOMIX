@@ -121,6 +121,5 @@ public class CLI extends Program {
 
         askSetting("use-stall-manager", "Do you want to use the stall manager? ");
         askSetting("use-migration-actor", "Do you want to use the migration actor? ");
-        askSetting("use-result-actor", "Do you want to use the result actor? ");
     }
 }

@@ -1,14 +1,22 @@
 {
   "html-url": "http://localhost:8080/sbank/Affilier3DsecureForm.html",
   "proxy-url": "http://localhost:8080/sbank/Affilier3DsecureSevlet",
-  "chrome-driver-path": "path/to/chromedriver",
-  "to-read-path": "path/to/testObjectives",
-  "test-save-path": "path/to/testSaveDirectory",
   "connection": "HttpClient",
-  "time": "500m",
+  "to-read-path": "path/to/testObjectives",
+
+  "test-save-path": "path/to/testSaveDirectory",
+  "test-suite": "jest",
+  "chrome-driver-path": "path/to/chromedriver",
+
+  "time": "5m",
+  "budgeting": "true",
   "inputs": "4",
   "restricted": "true",
+  "verbose-level": "3",
+
   "population": "200",
+  "initial-chromosome-length": "10",
+
   "objective": "ALL",
   "approach": "MULTI",
   "compare": "SINGLE_OBJECTIVE",
@@ -16,11 +24,9 @@
   "crossover": "SIMPLE_CROSSOVER",
   "select": "SIMPLE_ELITISM_SELECTION",
   "mutate": "ADAPTIVE_FITNESS_BASED_MUTATION",
-  "verbose-level": "3",
-  "budgeting": "true",
   "fitness-function": "REAL_CODED_EDIT_DISTANCE",
+
   "use-stall-manager": "true",
-  "use-migration-actor": "true",
-  "use-result-actor": "true",
-  "easter-egg": "true"
+  "max-stalled-generations": "1000",
+  "use-migration-actor": "true"
 }

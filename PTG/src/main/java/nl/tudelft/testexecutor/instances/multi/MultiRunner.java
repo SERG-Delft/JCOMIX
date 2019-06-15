@@ -54,17 +54,13 @@ public class MultiRunner extends GeneralRunner {
         }
 
         if (getProperties().get("use-stall-manager").matches("true")) {
-            MultiStallManager stallManager = new MultiStallManager(experiment.getObjectives());
+            MultiStallManager stallManager = new MultiStallManager(experiment.getObjectives(), getProperties());
             getEnvironment().addActor(stallManager);
         }
 
         if (getProperties().get("use-migration-actor").matches("true")) {
             MultiMigrationActor migrationActor = new MultiMigrationActor(getEnvironment());
             getEnvironment().addActor(migrationActor);
-        }
-
-        if (getProperties().get("use-result-actor").matches("true")) {
-            // TODO not really usefull like this
         }
     }
 
@@ -81,7 +77,7 @@ public class MultiRunner extends GeneralRunner {
         int[] chromosomeSizes = new int[amount];
 
         for (int i = 0; i < amount; i++) {
-            chromosomeSizes[i] = 10; // TODO 10 should also be a property
+            chromosomeSizes[i] = Integer.parseInt(getProperties().get("initial-chromosome-length"));
         }
 
         PopulationFactory factory = new PopulationFactory() {
@@ -121,7 +117,7 @@ public class MultiRunner extends GeneralRunner {
                     (GrammarIndividual<Character, List<TestObjective>, String>) population.get(i).get(0);
             List<List<Character>> dnaList = best.getDNA();
 
-            TestCase testCase = new TestCase(getExperiment().getServletEntries());
+            TestCase testCase = new TestCase(getExperiment().getProxyEntries());
 
             for (int j = 0; j < dnaList.size(); j++) {
                 StringBuilder solution = new StringBuilder();
