@@ -7,14 +7,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * This class implements the language injector.
+ * It implements a point injection.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class PointNode extends ReplaceNode {
 
+    /**
+     * Constructor.
+     *
+     * @param name the name of the injection
+     * @param symbol the symbol to inject
+     */
     public PointNode(String name, String symbol) {
         super(name, symbol);
     }
 
     @Override
-    public List<List<Pair<String, String>>> inject(List<Pair<String, Integer>> strings) {
+    public List<List<Pair<String, String>>> generateInjections(List<Pair<String, Integer>> strings) {
         strings.sort(Comparator.comparingInt(Pair::getSecond));
 
         List<List<Pair<String, String>>> permutations = new ArrayList<>();

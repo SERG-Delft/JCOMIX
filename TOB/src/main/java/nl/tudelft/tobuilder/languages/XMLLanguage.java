@@ -4,7 +4,6 @@ import nl.tudelft.generated.XMLLexer;
 import nl.tudelft.generated.XMLParser;
 import nl.tudelft.generated.XMLParserBaseListener;
 import nl.tudelft.generated.XMLParserListener;
-import nl.tudelft.tobuilder.Pair;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -13,13 +12,12 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.util.*;
 
+/**
+ * This class implements the XMLLanguage class.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class XMLLanguage extends Language<XMLLexer, XMLParser> {
-
-    @Override
-    protected void setUp(String text) {
-        setLexer(createLexer(text));
-        setParser(createParser(getLexer()));
-    }
 
     @Override
     protected XMLLexer createLexer(String text) {
@@ -34,7 +32,7 @@ public class XMLLanguage extends Language<XMLLexer, XMLParser> {
 
     @Override
     public boolean validate(String text) {
-        setUp(text);
+        languageSetUp(text);
 
         getParser().addErrorListener(this);
 
@@ -53,11 +51,11 @@ public class XMLLanguage extends Language<XMLLexer, XMLParser> {
     public Map<String, String> identifyMatcher(String fileText, List<String> targets) {
         Map<String, String> pairs = new HashMap<>();
 
-        setUp(fileText);
+        languageSetUp(fileText);
 
         Queue<XMLParser.ContentContext> queue = new LinkedList<>();
         queue.add(getParser().content());
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             XMLParser.ContentContext tree = queue.remove();
 
             if (tree == null || tree.element() == null) {
@@ -67,7 +65,7 @@ public class XMLLanguage extends Language<XMLLexer, XMLParser> {
             for (XMLParser.ElementContext child: tree.element()) {
 //                System.out.println(child.getText());
 
-                if(child.content() == null) {
+                if (child.content() == null) {
                     continue;
                 }
 

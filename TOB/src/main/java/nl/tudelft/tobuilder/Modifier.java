@@ -2,9 +2,30 @@ package nl.tudelft.tobuilder;
 
 import java.util.List;
 
-public class Modifier {
+/**
+ * This final class contains several utility functions for reading/writing/copying files.
+ *
+ * @author Dimitri Stallenberg
+ */
+public final class Modifier {
 
-    public String modify(String text, List<Pair<String, Pair<String, String>>> pairs) {
+    /**
+     * As this class is final its constructor should be private.
+     *
+     * @throws InstantiationException instantiating this class throws th
+     */
+    private Modifier() throws InstantiationException {
+        throw new InstantiationException("This class cannot be instantiated!");
+    }
+
+    /**
+     * This static method modifies a given text using matcher strings and injections.
+     *
+     * @param text the text to modify.
+     * @param pairs the list of pairs of matcher strings and injections
+     * @return the modified text
+     */
+    public static String modify(String text, List<Pair<String, Pair<String, String>>> pairs) {
         String modified = text;
 
         for (Pair<String, Pair<String, String>> pair : pairs) {

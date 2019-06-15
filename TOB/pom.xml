@@ -216,6 +216,10 @@
                     <includeTests>true</includeTests>
                     <failOnViolation>true</failOnViolation>
                     <printFailingErrors>true</printFailingErrors>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/*.java</exclude>
+                    </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
                     </rulesets>
@@ -261,6 +265,7 @@
                 <version>${maven.checkstyle.plugin}</version>
                 <configuration>
                     <configLocation>${project.parent.basedir}/checkstyle.xml</configLocation>
+                    <suppressionsLocation>${project.parent.basedir}/checkstyle-suppressions.xml</suppressionsLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 </configuration>
             </plugin>
@@ -273,6 +278,10 @@
                     <analysisCache>true</analysisCache>
                     <skipEmptyReport>false</skipEmptyReport>
                     <includeTests>true</includeTests>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/*.java</exclude>
+                    </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
                     </rulesets>

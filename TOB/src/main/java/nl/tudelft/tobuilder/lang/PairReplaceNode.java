@@ -7,6 +7,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class implements the language injector.
+ * It implements a pair replacement injection.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class PairReplaceNode extends ReplaceNode {
 
     private String follow;
@@ -14,6 +20,15 @@ public class PairReplaceNode extends ReplaceNode {
 
     private Map<String, String> targets;
 
+    /**
+     * Constructor.
+     *
+     * @param name the name of the injection
+     * @param targets the targets the injector should look for
+     * @param symbol the symbol to inject
+     * @param follow the second symbol to inject
+     * @param injection the actual injection
+     */
     public PairReplaceNode(String name, Map<String, String> targets, String symbol, String follow, String injection) {
         super(name, symbol);
         this.targets = targets;
@@ -22,7 +37,7 @@ public class PairReplaceNode extends ReplaceNode {
     }
 
     @Override
-    public List<List<Pair<String, String>>> inject(List<Pair<String, Integer>> strings) {
+    public List<List<Pair<String, String>>> generateInjections(List<Pair<String, Integer>> strings) {
         strings.sort(Comparator.comparingInt(Pair::getSecond));
 
         List<List<Pair<String, String>>> permutations = new ArrayList<>();
@@ -52,6 +67,11 @@ public class PairReplaceNode extends ReplaceNode {
         return permutations;
     }
 
+    /**
+     * This method will get the second injection symbol.
+     *
+     * @return the second injection symbol
+     */
     public String getFollow() {
         return follow;
     }

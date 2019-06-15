@@ -6,18 +6,30 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * This class implements the language injector.
+ * It implements a replace injection.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class ReplaceNode implements LangNode {
 
     private String name;
     private String symbol;
 
+    /**
+     * Constructor.
+     *
+     * @param name the name of the injection
+     * @param symbol the symbol to inject
+     */
     public ReplaceNode(String name, String symbol) {
         this.name = name;
         this.symbol = symbol;
     }
 
     @Override
-    public List<List<Pair<String, String>>> inject(List<Pair<String, Integer>> strings) {
+    public List<List<Pair<String, String>>> generateInjections(List<Pair<String, Integer>> strings) {
         strings.sort(Comparator.comparingInt(Pair::getSecond));
 
         List<List<Pair<String, String>>> permutations = new ArrayList<>();
@@ -44,6 +56,11 @@ public class ReplaceNode implements LangNode {
         return name;
     }
 
+    /**
+     * This method gets the injection symbol.
+     *
+     * @return the injection symbol
+     */
     public String getSymbol() {
         return symbol;
     }

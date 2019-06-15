@@ -212,6 +212,10 @@
                     <includeTests>true</includeTests>
                     <failOnViolation>true</failOnViolation>
                     <printFailingErrors>true</printFailingErrors>
+                    <excludes>
+                        <exclude>**/distances/*.java</exclude>
+                        <exclude>**/testexecutor/Alphabet.java</exclude>
+                    </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
                     </rulesets>
@@ -270,6 +274,10 @@
                     <analysisCache>true</analysisCache>
                     <skipEmptyReport>false</skipEmptyReport>
                     <includeTests>true</includeTests>
+                    <excludes>
+                        <exclude>**/distances/*.java</exclude>
+                        <exclude>**/testexecutor/Alphabet.java</exclude>
+                    </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
                     </rulesets>

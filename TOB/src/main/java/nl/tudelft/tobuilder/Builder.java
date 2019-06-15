@@ -8,21 +8,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * This class represents the main test objective builder object.
+ * It will generate malicious test objectives for a certain language based on a correct test objective.
+ *
+ * @author Dimitri Stallenberg
+ */
 public class Builder {
 
     private Language language;
 
+    /**
+     * Constructor.
+     *
+     * @param language the language string of the message
+     */
     public Builder(String language) {
         this.language = getLanguageObject(language);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param language the language object of the message
+     */
     public Builder(Language language) {
         this.language = language;
     }
 
+    /**
+     * This method gets the language object based on a string.
+     *
+     * @param language the string name of a language
+     * @return the language object
+     */
     private Language getLanguageObject(String language) {
         switch (language) {
             case "xml":
@@ -33,18 +53,23 @@ public class Builder {
         }
     }
 
+    /**
+     * This method builds the malicious test objectives.
+     *
+     * @param expectedOutput the original correct text
+     * @param targets the targets in the text
+     * @return the mapping between names and test objectives
+     */
     public Map<String, String> build(String expectedOutput, List<Pair<String, Integer>> targets) {
         language.validate(expectedOutput);
 
         List<String> targetsSingle = new ArrayList<>();
 
-        for (int i = 0; i < targets.size(); i++) {
-            targetsSingle.add(targets.get(i).getFirst());
+        for (Pair<String, Integer> target : targets) {
+            targetsSingle.add(target.getFirst());
         }
 
         Map<String, String> targetMatchStrings = language.identifyMatcher(expectedOutput, targetsSingle);
-
-        Modifier modifier = new Modifier();
 
         List<LangNode> injections = new ArrayList<>();
 
@@ -89,24 +114,24 @@ public class Builder {
 
                 List<Pair<String, String>> replacements = permutations.get(i);
 
-                for (int j = 0; j < replacements.size(); j++) {
-                    Pair<String, String> replacement = replacements.get(j);
-
+                for (Pair<String, String> replacement : replacements) {
                     if (replacement.getFirst().equals(replacement.getSecond())) {
                         continue;
                     }
 
-                    if(!targetMatchStrings.containsKey(replacement.getFirst())) {
+                    if (!targetMatchStrings.containsKey(replacement.getFirst())) {
                         // TODO
                         throw new IllegalStateException("Error");
                     }
 
                     String matcher = targetMatchStrings.get(replacement.getFirst());
 
-                    targetAndReplacements.add(new Pair<>(replacement.getFirst(), new Pair<>(matcher, replacement.getSecond())));
+                    targetAndReplacements.add(
+                            new Pair<>(replacement.getFirst(),
+                            new Pair<>(matcher, replacement.getSecond())));
                 }
 
-                String modifiedString = modifier.modify(expectedOutput, targetAndReplacements);
+                String modifiedString = Modifier.modify(expectedOutput, targetAndReplacements);
 
                 try {
                     language.validate(modifiedString);

@@ -2,5 +2,6 @@
 <suppressions>
     <suppress files="[\\/]nl[\\/]tudelft[\\/]testexecutor[\\/]instances[\\/]distances[\\/]" checks="[a-zA-Z0-9]*" />
     <suppress files="[\\/]nl[\\/]tudelft[\\/]testexecutor[\\/]Alphabet\.java" checks="[a-zA-Z0-9]*" />
-    <suppress files="[\\/]test[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="[\\/]nl[\\/]tudelft[\\/]generated[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="[\\/]nl[\\/]tudelft[\\/].\.tokens" checks="[a-zA-Z0-9]*" />
 </suppressions>

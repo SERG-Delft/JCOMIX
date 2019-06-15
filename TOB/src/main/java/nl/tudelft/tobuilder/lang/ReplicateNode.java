@@ -4,21 +4,30 @@ import nl.tudelft.tobuilder.Pair;
 
 import java.util.*;
 
-public class ReplicateNode implements LangNode {
-
-    private String name;
-    private String follow;
+/**
+ * This class implements the language injector.
+ * It implements a replicate injection.
+ *
+ * @author Dimitri Stallenberg
+ */
+public class ReplicateNode extends ReplaceNode {
 
     private Map<String, String> targets;
 
-    public ReplicateNode(String name, Map<String, String> targets, String follow) {
-        this.name = name;
+    /**
+     * Constructor.
+     *
+     * @param name the name of the injection
+     * @param symbol the symbol to inject
+     * @param targets the matcher strings
+     */
+    public ReplicateNode(String name, String symbol, Map<String, String> targets) {
+        super(name, symbol);
         this.targets = targets;
-        this.follow = follow;
     }
 
     @Override
-    public List<List<Pair<String, String>>> inject(List<Pair<String, Integer>> strings) {
+    public List<List<Pair<String, String>>> generateInjections(List<Pair<String, Integer>> strings) {
         strings.sort(Comparator.comparingInt(Pair::getSecond));
 
         List<List<Pair<String, String>>> permutations = new ArrayList<>();
@@ -35,7 +44,7 @@ public class ReplicateNode implements LangNode {
 
             String[] parts = matcher.split(strings.get(i).getFirst());
 
-            String forged = strings.get(i).getFirst() + parts[1] + " " + parts[0] + follow;
+            String forged = strings.get(i).getFirst() + parts[1] + " " + parts[0] + getSymbol();
 
             for (int j = 0; j < strings.size(); j++) {
                 if (i == j) {
@@ -49,10 +58,5 @@ public class ReplicateNode implements LangNode {
         }
 
         return permutations;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 }
