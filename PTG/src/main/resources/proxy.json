@@ -14,14 +14,14 @@
       "html-target": "BankCode"
     },
     {
-      "value": "123456789123456",
-      "proxy-key": "CardNumber",
-      "html-target": "UserName"
-    },
-    {
       "value": "0001User",
       "proxy-key": "RequestId",
       "html-target": "RequestId"
+    },
+    {
+      "value": "123456789123456",
+      "proxy-key": "CardNumber",
+      "html-target": "UserName"
     }
   ]
 }
