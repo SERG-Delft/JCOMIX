@@ -5,8 +5,10 @@ import jga.factory.Approach;
 import jga.factory.EnvironmentFactory;
 import jga.factory.Operator;
 import jga.populations.Population;
+import jga.random.UniformRandom;
 import jga.solutions.Solution;
 import jga.utils.ExecutorPool;
+import jga.utils.RandomUtil;
 import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestExecutor;
@@ -43,9 +45,13 @@ public abstract class GeneralRunner {
         this.experiment = experiment;
         this.properties = properties;
 
-        final int amountOfThreads = 4; // TODO make this a property
+        ExecutorPool.setNumThreads(Integer.parseInt(properties.get("threads")));
 
-        ExecutorPool.setNumThreads(amountOfThreads);
+        final int seed = Integer.parseInt(properties.get("random-seed"));
+
+        if (seed != 0) {
+            RandomUtil.useRandom(new UniformRandom(seed));
+        }
 
         environment = buildEnvironment(properties);
     }

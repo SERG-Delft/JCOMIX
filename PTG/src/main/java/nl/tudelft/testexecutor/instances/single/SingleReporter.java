@@ -26,26 +26,34 @@ public class SingleReporter extends Reporter implements Actor {
 
     private String solution;
 
+    private int verbose;
+
     /**
      * Constructor.
      *
      * @param environment       the environment the reporter reports on
      * @param reportingInterval the interval the reporter should report on
      * @param objectiveName     the name of the objective the reporter reports on
+     * @param verbose           the verbose level
      */
-    public SingleReporter(Environment environment, double reportingInterval, String objectiveName) {
+    public SingleReporter(Environment environment, double reportingInterval, String objectiveName, int verbose) {
         super(environment, reportingInterval);
         this.objectiveName = objectiveName;
+        this.verbose = verbose;
     }
 
     @Override
     public void reportFunction() {
+        if (verbose == 0) {
+            return;
+        }
+
         if (startScore == -1 && score != -1) {
             startScore = score;
         }
 
         StringBuilder log = new StringBuilder()
-                .append("Time passed: ")
+                .append("\nTime passed: ")
                 .append((System.currentTimeMillis() - getStartTime()) / Constants.MILLIS_PER_SEC)
                 .append(" seconds\n");
 
@@ -53,15 +61,20 @@ public class SingleReporter extends Reporter implements Actor {
             calculateTimings(log);
         }
 
-        log.append(objectiveName)
-                .append(" :")
-                .append(String.format("%.2f", score))
-                .append(" : ")
-                .append(solution)
-                .append("\n")
-                .append("Generation: ")
+        if (verbose == 2) {
+            log.append(objectiveName)
+                    .append(" :")
+                    .append(String.format("%.2f", score))
+                    .append(" : ")
+                    .append(solution)
+                    .append("\n");
+        }
+
+        log.append("Generation: ")
                 .append(getEnvironment().getGen())
                 .append("\n");
+
+
         LogUtil.getInstance().info(log.toString());
     }
 

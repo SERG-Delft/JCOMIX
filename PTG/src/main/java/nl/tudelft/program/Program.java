@@ -16,6 +16,7 @@ import nl.tudelft.testexecutor.testing.*;
 import nl.tudelft.util.Constants;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -101,42 +102,59 @@ public class Program {
     }
 
     private void logFinalReport(Solution[] resultSet, long last) {
-        StringBuilder solved = new StringBuilder("Solved: ");
-        StringBuilder unSolved = new StringBuilder("Not solved: ");
+        StringBuilder overview = new StringBuilder("Overview: \n");
+        overview.append("Amount of threads used: ")
+                .append(getArgumentProcessor().getPropertyArgumentMap().get("threads"))
+                .append("\nSeed used: ")
+                .append(getArgumentProcessor().getPropertyArgumentMap().get("random-seed"))
+                .append("\n");
 
-        StringBuilder overview = new StringBuilder();
 
+        int solvedCount = 0;
+        int unsolvedCount = 0;
         for (int i = 0; i < resultSet.length; i++) {
             if (resultSet[i] == null) {
                 continue;
             }
 
-            overview.append("TO: ")
-                    .append(i)
-                    .append(" \t Solution: ")
-                    .append(((TestCase) resultSet[i].getSolution()).getInputs().values().toString())
-                    .append("\t fitness: ")
+            overview.append(i)
+                    .append(" \t solution: ");
+
+            Collection<Pair<String, Integer>> pairs = ((TestCase) resultSet[i].getSolution()).getInputs().values();
+
+            for(Pair<String, Integer> pair : pairs) {
+                overview.append(pair.getFirst())
+                        .append(" ");
+            }
+
+            overview.append("\t fitness: ")
                     .append(resultSet[i].getFitness())
                     .append("\t time: ")
                     .append((resultSet[i].getTime() / Constants.MILLIS_PER_SEC))
                     .append("\n");
 
             if (resultSet[i].getFitness() != 1) {
-                unSolved.append("\t").append(i);
+                unsolvedCount++;
                 continue;
             }
-
-            solved.append("\t").append(i);
+            solvedCount++;
         }
-
-        overview.append("Total time: ").append((System.currentTimeMillis() - last));
-
-        solved.append("\n")
-                .append(unSolved)
+        StringBuilder text = new StringBuilder("\nSolved: ")
+                .append("\t")
+                .append(solvedCount)
                 .append("\n")
-                .append(overview);
+                .append("Not solved: ")
+                .append("\t")
+                .append(unsolvedCount)
+                .append('\n');
 
-        LogUtil.getInstance().info(solved.toString());
+        overview.append("Total time: ")
+                .append((System.currentTimeMillis() - last))
+                .append("\n");
+
+        text.append(overview);
+
+        LogUtil.getInstance().info(text.toString());
     }
 
     /**

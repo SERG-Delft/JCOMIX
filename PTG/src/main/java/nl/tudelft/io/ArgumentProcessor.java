@@ -228,13 +228,13 @@ public class ArgumentProcessor {
 
         flagMap.put("-j", new Flag("fitness-function", "Set the fitness function.", fitnessFunctionOptions));
 
-
         Set<String> verboseLevels = new HashSet<>();
         verboseLevels.add("0");
         verboseLevels.add("1");
         verboseLevels.add("2");
-        verboseLevels.add("3");
 
+        flagMap.put("--random-seed", new Flag("random-seed", "Set the seed to use for the random number generation. Use seed 0 to use a random seed.", "[1-9][0-9]*"));
+        flagMap.put("--threads", new Flag("threads", "Set the amount of threads to use.", "[1-9]"));
         flagMap.put("-d", new Flag("verbose-level", "Set the verbose level.", verboseLevels));
         flagMap.put("-b", new Flag("budgeting", "Set the budgeting option."));
 

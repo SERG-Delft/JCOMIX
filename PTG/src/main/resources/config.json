@@ -12,7 +12,9 @@
   "budgeting": "true",
   "inputs": "4",
   "restricted": "true",
-  "verbose-level": "3",
+  "verbose-level": "2",
+  "threads": "4",
+  "random-seed": "1010",
 
   "population": "200",
   "initial-chromosome-length": "10",

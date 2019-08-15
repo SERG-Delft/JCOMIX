@@ -131,7 +131,7 @@ public class SingleRunner extends GeneralRunner {
 
         getEnvironment().setSolutionFoundFlag(false);
 
-        SingleReporter reporter = new SingleReporter(getEnvironment(), 1, randomTO.getFileName());
+        SingleReporter reporter = new SingleReporter(getEnvironment(), 1, randomTO.getFileName(), Integer.parseInt(getProperties().get("verbose-level")));
         getEnvironment().addActor(reporter);
         reporter.reportFunction();
         populations[index] = getEnvironment().executeTimeLimit(randomTO, populations[index], timePerTo);
@@ -156,22 +156,31 @@ public class SingleRunner extends GeneralRunner {
     }
 
     private void reportProgress(TestObjective to, List<List<Character>> dna, long totalTime, String text) {
+        if (Integer.parseInt(getProperties().get("verbose-level")) == 0) {
+            return;
+        }
+
         StringBuilder report = new StringBuilder(text);
 
         report.append("\n\t");
         report.append(to.getFileName());
-        report.append("\nsolution:\n\t");
 
-        for (List<Character> chromosome : dna) {
-            for (Character gene : chromosome) {
-                report.append(gene);
+        if (Integer.parseInt(getProperties().get("verbose-level")) == 2) {
+            report.append("\nsolution:\n\t");
+
+            for (List<Character> chromosome : dna) {
+                for (Character gene : chromosome) {
+                    report.append(gene);
+                }
+                report.append("\t");
             }
-            report.append("\t");
-        }
 
-        report.append("\ntiming:\n\t");
-        report.append((totalTime) / Constants.MILLIS_PER_SEC);
-        report.append(" seconds");
+            report.append("\ntiming:\n\t");
+            report.append((totalTime) / Constants.MILLIS_PER_SEC);
+            report.append(" seconds\n");
+        } else {
+            report.append("\n");
+        }
 
         LogUtil.getInstance().info(report.toString());
 

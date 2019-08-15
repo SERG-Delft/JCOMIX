@@ -100,7 +100,7 @@ public class MultiRunner extends GeneralRunner {
         MultiIndividualPopulation population = (MultiIndividualPopulation) createPopulation();
         // TODO check  for population type
 
-        MultiReporter multiReporter = new MultiReporter(getEnvironment(), 1, getExperiment());
+        MultiReporter multiReporter = new MultiReporter(getEnvironment(), 1, getExperiment(), Integer.parseInt(getProperties().get("verbose-level")));
         multiReporter.reportFunction();
         getEnvironment().addActor(multiReporter);
 

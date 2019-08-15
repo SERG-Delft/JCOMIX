@@ -34,25 +34,36 @@ public class MultiReporter extends Reporter implements Actor {
     private int prevGen;
     private long prevReport;
 
+    private int verbose;
+
     /**
      * Constructor.
      *
-     * @param environment the environment to report on
+     * @param environment       the environment to report on
      * @param reportingInterval the interval to report on
-     * @param experiment the experiment the to report on
+     * @param experiment        the experiment the to report on
+     * @param verbose           the verbose level
      */
-    public MultiReporter(Environment environment, double reportingInterval, Experiment experiment) {
+    public MultiReporter(Environment environment, double reportingInterval, Experiment experiment, int verbose) {
         super(environment, reportingInterval);
         this.startTime = System.currentTimeMillis();
         this.experiment = experiment;
+        this.verbose = verbose;
     }
 
     @Override
     public void reportFunction() {
+        if (verbose == 0) {
+            return;
+        }
+
         StringBuilder report = new StringBuilder("\n");
-        report.append("Stage: ")
-                .append(getEnvironment().getStage())
-                .append("\n");
+
+        if (verbose == 2) {
+            report.append("Stage: ")
+                    .append(getEnvironment().getStage())
+                    .append("\n");
+        }
 
         if (scores == null) {
             prevGen = getEnvironment().getGen();
@@ -66,7 +77,9 @@ public class MultiReporter extends Reporter implements Actor {
             previousScores = currentScores.clone();
         }
 
-        reportToInformation(report, currentScores);
+        if (verbose == 2) {
+            reportToInformation(report, currentScores);
+        }
 
         reportGeneralInformation(report, currentScores);
 
@@ -112,13 +125,15 @@ public class MultiReporter extends Reporter implements Actor {
                 .append(currentScores.length)
                 .append("\n")
                 .append("Time: ")
-                .append((System.currentTimeMillis() - startTime) / Constants.MILLIS_PER_SEC)
-                .append("\n")
-                .append("Generations per second: ")
-                .append(String.format("%.1f", genPerSec))
-                .append("\n")
-                .append("Average generations per second: ")
-                .append(String.format("%.1f", avgGenPerSec));
+                .append((System.currentTimeMillis() - startTime) / Constants.MILLIS_PER_SEC);
+        if (verbose == 2) {
+            report.append("\n")
+                    .append("Generations per second: ")
+                    .append(String.format("%.1f", genPerSec))
+                    .append("\n")
+                    .append("Average generations per second: ")
+                    .append(String.format("%.1f", avgGenPerSec));
+        }
     }
 
     @Override
