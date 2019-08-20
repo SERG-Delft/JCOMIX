@@ -4,106 +4,114 @@
 [![build status](https://gitlab.com/tweet.dimitri/JCOMIX/badges/master/pipeline.svg)](https://gitlab.com/tweet.dimitri/JCOMIX/commits/master)
 [![coverage report](https://gitlab.com/tweet.dimitri/JCOMIX/badges/master/coverage.svg)](https://gitlab.com/tweet.dimitri/JCOMIX/commits/master)
 
-This tool if used correctly will generate java test classes that use selenium to test penetrations on your web server.
+This tool employs the COMIX search technique to generate test suites for the xml sanitizers/validators of your web application. 
 
 #### Details
 Genetic Algorithm library: [JGA](https://gitlab.com/tweet.dimitri/jga)
 
 ## Features
 
+#### Test suites
+* JUnit using selenium
+* Jest
+
+#### Languages
+* XML
+
 ## Getting started
 
 #### Prerequisites
-* Java 1.8 (or higher)
+* Java 1.8 or higher
 * Maven (command line or within IDE)
-* Apache Tomcat
-
-###### Tests
-* Chrome
-* Chrome-driver
+* Chrome 
+* Apache Tomcat (an example instance is present in this repo)
+* Chrome-driver (only needed for JUnit test suites)
 
 #### Running the artifact
 TODO
 
 #### Running the example program from source
-* Open the command line
-    * `cd /path/to/project/`
-    * `mvn clean install`
-    * `mvn package`
+On the command line
+* `cd /path/to/project/`
+* `mvn clean install`
+* `mvn package`
 
-* The program needs a servlet to connect to.
-    * `cd applications/apache-tomcat-9.0.19/bin`
-    * If you're on a windows use:
-        * `start.bat`
-    * If you're on a linux/macos use:
-        * `start.sh` 
-        * You might have problems with privileges, to solve this use:
-            * `chmod +x start.sh`
-            * `chmod +x catalina.sh`
+The program needs a proxy to connect to
+* `cd applications/apache-tomcat-9.0.19/bin`
+* If you're on a windows use:
+    * `start.bat`
+* If you're on a linux/macos use:
+    * `start.sh` 
+    * You might have problems with privileges, to solve this use:
+        * `chmod +x start.sh`
+        * `chmod +x catalina.sh`
 
+Go to the PTG directory
+* `cd ../PTG/target/`
 
-* Go to the PTG directory.
-    * `cd ../PTG/target/`
-* Run the tool with the `--init` flag to create the config files:  
-    * `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar --init`
+Run the tool with the `--init` flag to create the config files:  
+* `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar --init`
 
-* A proxy and a config file will be created. 
-    * In the proxy.json change the `expected-output-path` property.
-    * In the config.json change the `save-path` property.
-    * In the config.json change the `path` property.
-    * In the config.json change the `chromedriver-path` property.
+A proxy and a config file will be created. 
 
-* Next, as you probably don't have any Test Objective XML files yet, you can create them using:
-    * `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar --build-tos`
-    * The TO files will be created in a folder called `generated`    
+Change this property in the proxy.json
+* `expected-output-path`
 
-* Now you can run the program with this command:  
-    * `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar [flags*]`
-    * '\*' implies zero or more
-    * Some flags require an argument as specified in the manual
+Change these properties in the config.json
+* `save-path`
+* `path` 
+* `chromedriver-path`
+
+Next, as you probably don't have any Test Objective files yet, you can create them using the `--build-tos` flag
+* `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar --build-tos`
+* The TO files will be created in a folder called `generated`    
+
+Now you can run the program with this command:  
+* `java -jar PTG-1.0-SNAPSHOT-jar-with-dependencies.jar [flags*]`
+* Some flags require an argument as specified in the manual
 
 #### Testing another java servlet webapp
 
-* Change some settings in the config.json.
-    * Change the `html-url` property.
-    * Change the `proxy-url` property.
-    * Change the `inputs` property.
+Change these settings in the config.json.
+* `html-url`
+* `proxy-url`
+* `inputs`
 
-* Change some settings in the proxy.json.
-    * Change the `target-entries`
-    * Change the `expected-output-path`.
+Change these settings in the proxy.json.
+* `target-entries`
+* `expected-output-path`
 
 #### Testing another type of webapp
 e.g. a node.js server instead of java servlet.
 
-* Create an implementation of the Proxy interface for your type of webapp.
+Create an implementation of the Proxy interface for your type of webapp.
 
-* Change some settings in the config.json.
-    * Change the `html-url` property.
-    * Change the `proxy-url` property.
-    * Change the `inputs` property.
+Change these settings in the config.json.
+* `html-url`
+* `proxy-url`
+* `inputs`
     
-* Change some settings in the proxy.json.
-    * Change the `target-entries`
-    * Change the `expected-output-path`.
+Change these settings in the proxy.json.
+* `target-entries`
+* `expected-output-path`
     
 #### Testing a non-XML webapp
 e.g. a webapp that uses json.
 
-* Change some settings in the proxy.json.
-    * Change the `output-language`.
-    * Change the `expected-output-path`.
+Change these settings in the proxy.json.
+* `output-language`.
+* `expected-output-path`.
 
 #### JUnit and Jest support
 Both Jest and JUnit test suites can be generated using this tool.
+
 This can be changed using the `test-suite` property
 
-###### JUnit
-To run the test suite do the following after the files have been generated
+##### To run a test suite do the following
+JUnit
 * Use either your IDE or maven to run the tests
 
-###### Jest
-To run the test suite do the following after the files have been generated
+Jest
 * `cd path/to/generated/tests`
 * `npm install`
 * `npm run test`
@@ -111,6 +119,7 @@ To run the test suite do the following after the files have been generated
 #### Small arguments manual
 * Use the `-h` or `--help` flag to get the full manual
 * Use the `--init` flag to generate a config and proxy file
+* Use the `--build-tos` flag to generate the test objective files
 * Use the `--cli` flag to open the CLI program (Try it!)
 
 #### The config file
@@ -185,7 +194,7 @@ Must be true or false.
 
 
 ## Developing Custom Extensions
-This tool has been developed to allow for a lot of extension.
+This tool has been developed to allow for easy extension.
 
 #### Explaining the main class
     public static void main(String[] args) {
@@ -212,7 +221,7 @@ This tool has been developed to allow for a lot of extension.
         // Last, we check all the properties for conflicting values.
         processor.findConflictsInPropertyValues();
 
-        // Here we start up the real program.
+        // Here we start the program.
         program.start();
     }
 

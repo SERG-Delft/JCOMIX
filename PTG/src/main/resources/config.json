@@ -5,7 +5,7 @@
   "to-read-path": "path/to/testObjectives",
 
   "test-save-path": "path/to/testSaveDirectory",
-  "test-suite": "jest",
+  "test-suite": "junit",
   "chrome-driver-path": "path/to/chromedriver",
 
   "time": "5m",
