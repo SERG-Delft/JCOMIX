@@ -19,7 +19,6 @@ public final class Main {
         throw new InstantiationException("This class cannot be instantiated!");
     }
 
-
     /**
      * The main method of the CLI project.
      *
@@ -38,8 +37,4 @@ public final class Main {
 
         program.start();
     }
-
-    // TODO remove these (are reminders for me)
-//        String url = "http://localhost:8080/sbank/Affilier3DsecureSevlet";
-//        String testObjectivePath = "TestObjectives/sbank3";
 }

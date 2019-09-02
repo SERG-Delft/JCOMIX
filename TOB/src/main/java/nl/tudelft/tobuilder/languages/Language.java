@@ -28,6 +28,7 @@ public abstract class Language<L extends Lexer, P extends Parser> implements ANT
      */
     protected void languageSetUp(String text) {
         setLexer(createLexer(text));
+        getLexer().removeErrorListeners();
         setParser(createParser(getLexer()));
     }
 

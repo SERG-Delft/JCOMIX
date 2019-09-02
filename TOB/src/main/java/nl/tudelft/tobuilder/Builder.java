@@ -56,11 +56,15 @@ public class Builder {
     /**
      * This method builds the malicious test objectives.
      *
-     * @param expectedOutput the original correct text
-     * @param targets the targets in the text
+     * @param expectedOutput    the original correct text
+     * @param targets           the targets in the text
+     * @param injectionMap      the injections to generate
      * @return the mapping between names and test objectives
      */
-    public Map<String, String> build(String expectedOutput, List<Pair<String, Integer>> targets) {
+    public Map<String, String> build(String expectedOutput,
+                                     List<Pair<String, Integer>> targets,
+                                     Map<String, List<String>> injectionMap) {
+
         language.validate(expectedOutput);
 
         List<String> targetsSingle = new ArrayList<>();
@@ -71,36 +75,7 @@ public class Builder {
 
         Map<String, String> targetMatchStrings = language.identifyMatcher(expectedOutput, targetsSingle);
 
-        List<LangNode> injections = new ArrayList<>();
-
-        // Add injections
-        injections.add(new ReplaceNode("close", "</test>"));
-        injections.add(new PointNode("meta", "<"));
-//        injections.add(new PointNode("meta", "\'"));
-//        injections.add(new PointNode("meta", "\""));
-//        injections.add(new PointNode("meta", ">"));
-
-        injections.add(new ReplaceNode("insert", "0 or~/**/1"));
-//        injections.add(new ReplaceNode("insert", "1 or/**/\"a\"=\"a\" or"));
-//        injections.add(new ReplaceNode("insert", "')/**/or true#"));
-//        injections.add(new ReplaceNode("insert", "0/**/||'a'='a'/**/"));
-//        injections.add(new ReplaceNode("insert", "'/**/;select sleep(5)--"));
-//        injections.add(new ReplaceNode("insert", "0 union/**/(select 0)#"));
-//        injections.add(new ReplaceNode("insert", "')/**/union/**/(select 0)#"));
-
-//        injections.add(new ReplicateNode("replicate", "0 or~/**/1", targetMatchStrings));
-//        injections.add(new ReplicateNode("replicate", "1 or/**/\"a\"=\"a\" or", targetMatchStrings));
-//        injections.add(new ReplicateNode("replicate", "')/**/or true#", targetMatchStrings));
-//        injections.add(new ReplicateNode("replicate", "0/**/||'a'='a'/**/", targetMatchStrings));
-//
-//
-//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0 or~/**/1"));
-//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "1 or/**/\"a\"=\"a\" or"));
-//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "')/**/or true#"));
-//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0/**/||'a'='a'/**/"));
-
-//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "0111</lu:IssuerBankCode> <!--", "<lu:CardNumber>  --><lu:RequestId>1 or/**/\"a\"=\"a\" or</lu:RequestId>"));
-
+        List<LangNode> injections = getInjectionsFromText(injectionMap, targetMatchStrings);
 
         Injections injectionsObject = new Injections(injections);
 
@@ -149,5 +124,64 @@ public class Builder {
 
         }
         return generatedTOs;
+    }
+
+    private List<LangNode> getInjectionsFromText(Map<String, List<String>> injectionMap, Map<String, String> targetMatchStrings) {
+        List<LangNode> injections = new ArrayList<>();
+
+        for (String injectionType : injectionMap.keySet()) {
+            List<String> injectionStrings = injectionMap.get(injectionType);
+
+            switch (injectionType) {
+                case "close":
+                case "insert":
+                    for (String injection : injectionStrings) {
+                        injections.add(new ReplaceNode(injectionType, injection));
+                    }
+                    break;
+                case "meta":
+                    for (String injection : injectionStrings) {
+                        injections.add(new PointNode(injectionType, injection));
+                    }
+                    break;
+                case "replicate":
+                    for (String injection : injectionStrings) {
+                        injections.add(new ReplicateNode(injectionType, injection, targetMatchStrings));
+                    }
+                    break;
+                case "replace":
+                    for (String injection : injectionStrings) {
+                        injections.add(new PairReplaceNode(injectionType, targetMatchStrings, "<!--", "-->", injection));
+                    }
+                    break;
+            }
+        }
+        // Add injections
+//        injections.add(new ReplaceNode("close", "</test>"));
+//        injections.add(new PointNode("meta", "<"));
+////        injections.add(new PointNode("meta", "\'"));
+////        injections.add(new PointNode("meta", "\""));
+////        injections.add(new PointNode("meta", ">"));
+//
+//        injections.add(new ReplaceNode("insert", "0 or~/**/1"));
+////        injections.add(new ReplaceNode("insert", "1 or/**/\"a\"=\"a\" or"));
+////        injections.add(new ReplaceNode("insert", "')/**/or true#"));
+////        injections.add(new ReplaceNode("insert", "0/**/||'a'='a'/**/"));
+////        injections.add(new ReplaceNode("insert", "'/**/;select sleep(5)--"));
+////        injections.add(new ReplaceNode("insert", "0 union/**/(select 0)#"));
+////        injections.add(new ReplaceNode("insert", "')/**/union/**/(select 0)#"));
+//
+//        injections.add(new ReplicateNode("replicate", "0 or~/**/1", targetMatchStrings));
+////        injections.add(new ReplicateNode("replicate", "1 or/**/\"a\"=\"a\" or", targetMatchStrings));
+////        injections.add(new ReplicateNode("replicate", "')/**/or true#", targetMatchStrings));
+////        injections.add(new ReplicateNode("replicate", "0/**/||'a'='a'/**/", targetMatchStrings));
+//
+//
+//        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0 or~/**/1"));
+////        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "1 or/**/\"a\"=\"a\" or"));
+////        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "')/**/or true#"));
+////        injections.add(new PairReplaceNode("replace", targetMatchStrings, "<!--", "-->", "0/**/||'a'='a'/**/"));
+
+        return injections;
     }
 }

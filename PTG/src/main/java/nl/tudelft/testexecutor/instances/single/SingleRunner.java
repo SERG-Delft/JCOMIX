@@ -144,9 +144,10 @@ public class SingleRunner extends GeneralRunner {
 
         List<List<Character>> dna = best.getDNA();
 
+        long totalTime = ((System.currentTimeMillis() - startTimeTo) + timeTaken[index]);
+        resultSet[index] = new Solution<>(generateTestCase(dna), totalTime, best.getFitness()[0]);
+
         if (getEnvironment().isSolutionFoundFlag()) {
-            long totalTime = ((System.currentTimeMillis() - startTimeTo) + timeTaken[index]);
-            resultSet[index] = new Solution<>(generateTestCase(dna), totalTime, best.getFitness()[0]);
             populations[index] = null;
 
             reportProgress(randomTO, dna, timeTaken[index], "Solved");

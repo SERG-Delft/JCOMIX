@@ -90,6 +90,9 @@ public class Program {
         }
 
         for (int i = 0; i < resultSet.length; i++) {
+            if (resultSet[i] == null || resultSet[i].getFitness() != 1) {
+                continue;
+            }
             try {
                 testWriter.writeTest(experiment.getObjectives().get(i), (TestCase) resultSet[i].getSolution());
             } catch (IOException e) {

@@ -8,8 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class will read the proxy.json file.
@@ -55,7 +54,7 @@ public final class ProxyReader {
         Map<String, Pair<String, Integer>> proxyEntries = new HashMap<>();
 
         try {
-            JSONObject jsonObject = new JSONObject(FileUtil.readAndNormalizeFile(file));
+            JSONObject jsonObject = new JSONObject(FileUtil.readFile(file, false));
             JSONArray jsonArray = jsonObject.getJSONArray("target-entries");
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -74,17 +73,17 @@ public final class ProxyReader {
     }
 
     /**
-     * This method reads the expected output path from the file.
+     * This method reads the language from the file.
      *
-     * @return the path to the file
+     * @return the language used
      */
-    public static String getExpectedOutputFilePath() {
+    public static String getLanguage() {
         String expectedOutput = "";
 
         try {
-            JSONObject jsonObject = new JSONObject(FileUtil.readAndNormalizeFile(file));
+            JSONObject jsonObject = new JSONObject(FileUtil.readFile(file, false));
 
-            expectedOutput = jsonObject.getString("expected-output-path");
+            expectedOutput = jsonObject.getString("output-language");
         } catch (JSONException e) {
             // TODO
             e.printStackTrace();
@@ -94,22 +93,34 @@ public final class ProxyReader {
     }
 
     /**
-     * This method reads the language from the file.
+     * This methods reads the injections from the file.
      *
-     * @return the language used
+     * @return the injections
      */
-    public static String getLanguage() {
-        String expectedOutput = "";
+    public static Map<String, List<String>> readInjections() {
+        Map<String, List<String>> injections = new HashMap<>();
 
         try {
-            JSONObject jsonObject = new JSONObject(FileUtil.readAndNormalizeFile(file));
+            JSONObject jsonObject = new JSONObject(FileUtil.readFile(file, false));
+            jsonObject = jsonObject.getJSONObject("injections");
 
-            expectedOutput = jsonObject.getString("output-language");
+            for (Iterator it = jsonObject.keys(); it.hasNext(); ) {
+                String key = (String) it.next();
+                JSONArray injectionArray = jsonObject.getJSONArray(key);
+                List<String> subInjections = new ArrayList<>();
+
+                for (int i = 0; i < injectionArray.length(); i++) {
+                    String injection = injectionArray.getString(i);
+                    subInjections.add(injection);
+                }
+
+                injections.put(key, subInjections);
+            }
         } catch (JSONException e) {
             // TODO
             e.printStackTrace();
         }
 
-        return expectedOutput;
+        return injections;
     }
 }

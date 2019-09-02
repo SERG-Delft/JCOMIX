@@ -16,6 +16,7 @@ import nl.tudelft.testexecutor.testing.TestObjective;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static nl.tudelft.util.TextToEnum.*;
 
@@ -47,11 +48,15 @@ public abstract class GeneralRunner {
 
         ExecutorPool.setNumThreads(Integer.parseInt(properties.get("threads")));
 
-        final int seed = Integer.parseInt(properties.get("random-seed"));
+        int seed = Integer.parseInt(properties.get("random-seed"));
 
-        if (seed != 0) {
-            RandomUtil.useRandom(new UniformRandom(seed));
+        if (seed == 0) {
+            seed = (new Random()).nextInt();
+            properties.put("random-seed", Integer.toString(seed));
         }
+
+        RandomUtil.useRandom(new UniformRandom(seed));
+
 
         environment = buildEnvironment(properties);
     }
