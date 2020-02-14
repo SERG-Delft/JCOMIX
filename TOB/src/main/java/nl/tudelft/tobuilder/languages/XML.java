@@ -17,7 +17,7 @@ import java.util.*;
  *
  * @author Dimitri Stallenberg
  */
-public class XMLLanguage extends Language<XMLLexer, XMLParser> {
+public class XML extends Language<XMLLexer, XMLParser> {
 
     @Override
     protected XMLLexer createLexer(String text) {

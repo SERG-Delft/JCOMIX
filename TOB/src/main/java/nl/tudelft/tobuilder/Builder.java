@@ -1,8 +1,9 @@
 package nl.tudelft.tobuilder;
 
 import nl.tudelft.tobuilder.lang.*;
+import nl.tudelft.tobuilder.languages.JSON;
 import nl.tudelft.tobuilder.languages.Language;
-import nl.tudelft.tobuilder.languages.XMLLanguage;
+import nl.tudelft.tobuilder.languages.XML;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,9 @@ public class Builder {
     private Language getLanguageObject(String language) {
         switch (language) {
             case "xml":
-                return new XMLLanguage();
+                return new XML();
+            case "json":
+                return new JSON();
             default:
                 // TODO
                 throw new IllegalArgumentException("Language not implemented!");
@@ -62,6 +65,7 @@ public class Builder {
      * @return the mapping between names and test objectives
      */
     public Map<String, String> build(String expectedOutput,
+                                     String extension,
                                      List<Pair<String, Integer>> targets,
                                      Map<String, List<String>> injectionMap) {
 
@@ -117,7 +121,7 @@ public class Builder {
                     continue;
                 }
 
-                String fileName = injectionsObject.lastName() + (i + 1) + "-" + count + ".xml";
+                String fileName = injectionsObject.lastName() + (i + 1) + "-" + count + "." + extension;
 
                 generatedTOs.put(fileName, modifiedString);
             }

@@ -44,7 +44,14 @@ public class ReplicateNode extends ReplaceNode {
 
             String[] parts = matcher.split(strings.get(i).getFirst());
 
-            String forged = strings.get(i).getFirst() + parts[1] + " " + parts[0] + getSymbol();
+            String forged = "";
+
+            if (parts.length == 0) {
+                forged = strings.get(i).getFirst() + getSymbol();
+            } else {
+                forged = strings.get(i).getFirst() + parts[1] + " " + parts[0] + getSymbol();
+            }
+
 
             for (int j = 0; j < strings.size(); j++) {
                 if (i == j) {

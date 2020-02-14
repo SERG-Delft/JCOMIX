@@ -30,9 +30,9 @@ public class TestObjectiveReader {
      *
      * @return a list of all the testobjectives in the folder
      */
-    public List<TestObjective> readTestObjectives() {
+    public List<TestObjective> readTestObjectives(String extension) {
         File dir = new File(filesPath);
-        File[] allFiles = dir.listFiles((dir1, name) -> name.endsWith(".xml"));
+        File[] allFiles = dir.listFiles((dir1, name) -> name.endsWith("." + extension));
 
         if (allFiles != null) {
             List<TestObjective> testObjectives = new ArrayList<>();

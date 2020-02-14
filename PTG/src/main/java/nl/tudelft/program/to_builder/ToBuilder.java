@@ -40,7 +40,7 @@ public class ToBuilder extends Program {
         String text = getExampleMessage(fieldDefaults);
 
         Builder builder = new Builder(ProxyReader.getLanguage());
-        Map<String, String> map = builder.build(text, values, injections);
+        Map<String, String> map = builder.build(text, ProxyReader.getLanguage(), values, injections);
 
         String path = getArgumentProcessor().getPropertyValue("to-read-path");
 

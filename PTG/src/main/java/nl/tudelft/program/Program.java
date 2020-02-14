@@ -45,7 +45,7 @@ public class Program {
      */
     public void start() {
         TestObjectiveReader reader = new TestObjectiveReader(getArgumentProcessor().getPropertyValue("to-read-path"));
-        List<TestObjective> testObjectives = reader.readTestObjectives();
+        List<TestObjective> testObjectives = reader.readTestObjectives(ProxyReader.getLanguage());
         testObjectives.sort(Comparator.comparing(TestObjective::getFileName));
 
         Map<String, Pair<String, Integer>> proxyEntries = ProxyReader.readProxyEntries();
