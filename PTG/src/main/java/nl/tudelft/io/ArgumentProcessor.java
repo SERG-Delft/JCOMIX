@@ -25,8 +25,8 @@ public class ArgumentProcessor {
     /**
      * Constructor.
      */
-    public ArgumentProcessor() {
-        this.flagMap = buildArgumentMap();
+    public ArgumentProcessor(Map<String, Flag> flagMap) {
+        this.flagMap = flagMap;
         this.called = false;
     }
 
@@ -34,8 +34,8 @@ public class ArgumentProcessor {
      * This method initializes the property maps.
      * If this method is not yet called the other functions won't work.
      */
-    public void initializeMaps() {
-        this.propertyArgumentMap = ConfigReader.readConfig(flagMap);
+    public void initializeMaps(Map<String, String> propertyArgumentMap) {
+        this.propertyArgumentMap = propertyArgumentMap;
 
         this.propertyFlagMap = new HashMap<>();
 
@@ -171,7 +171,7 @@ public class ArgumentProcessor {
      * @return the mapping
      */
     @SuppressWarnings("checkstyle:methodlength")
-    private Map<String, Flag> buildArgumentMap() {
+    public static Map<String, Flag> buildArgumentMap() {
         Map<String, Flag> flagMap = new HashMap<>();
 
         flagMap.put("-h", new Flag("Manual", "Displays this help menu.", false));

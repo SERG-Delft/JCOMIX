@@ -6,6 +6,7 @@ import nl.tudelft.io.readers.TestObjectiveReader;
 import nl.tudelft.io.writers.JUnitWriter;
 import nl.tudelft.io.writers.JestWriter;
 import nl.tudelft.proxy.HttpProcessor;
+import nl.tudelft.proxy.Proxy;
 import nl.tudelft.tobuilder.Pair;
 import nl.tudelft.io.*;
 import nl.tudelft.io.writers.TestWriter;
@@ -41,32 +42,14 @@ public class Program {
     }
 
     /**
-     * Creates the HttpProcessor and the Experiment object to start the Runner.
-     */
-    public void start() {
-        TestObjectiveReader reader = new TestObjectiveReader(getArgumentProcessor().getPropertyValue("to-read-path"));
-        List<TestObjective> testObjectives = reader.readTestObjectives(ProxyReader.getLanguage());
-        testObjectives.sort(Comparator.comparing(TestObjective::getFileName));
-
-        Map<String, Pair<String, Integer>> proxyEntries = ProxyReader.readProxyEntries();
-
-        HttpProcessor processor = new HttpProcessor(
-                getArgumentProcessor().getPropertyValue("proxy-url"),
-                getArgumentProcessor().getPropertyValue("connection"));
-
-        Experiment experiment = new Experiment(testObjectives, proxyEntries);
-
-        startRunner(processor, experiment);
-    }
-
-    /**
      * Creates the Runner and starts it.
      *
-     * @param processor  the HttpProcessor object
+     * @param proxy      the Proxy object
      * @param experiment the Experiment object
+     * @return the found set of solutions
      */
-    private void startRunner(HttpProcessor processor, Experiment experiment) {
-        TestExecutor iTestExecutor = new TestExecutor(processor);
+    public Solution[] start(Proxy proxy, Experiment experiment) {
+        TestExecutor iTestExecutor = new TestExecutor(proxy);
 
         long last = System.currentTimeMillis();
 
@@ -93,15 +76,12 @@ public class Program {
             if (resultSet[i] == null || resultSet[i].getFitness() != 1) {
                 continue;
             }
-            try {
-                testWriter.writeTest(experiment.getObjectives().get(i), (TestCase) resultSet[i].getSolution());
-            } catch (IOException e) {
-                // TODO
-                e.printStackTrace();
-            }
+            testWriter.writeTest(experiment.getObjectives().get(i), (TestCase) resultSet[i].getSolution());
         }
 
         logFinalReport(resultSet, last);
+
+        return resultSet;
     }
 
     private void logFinalReport(Solution[] resultSet, long last) {

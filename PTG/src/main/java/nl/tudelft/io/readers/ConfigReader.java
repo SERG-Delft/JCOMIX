@@ -120,12 +120,12 @@ public final class ConfigReader {
      * @param time the time string
      * @return the time in minutes
      */
-    public static int readTimeToMinutes(String time) {
-        final int secondsPerMinute = 60;
-        final int minutesPerHour = 60;
-        final int hoursPerDay = 24;
+    public static double readTimeToMinutes(String time) {
+        final double secondsPerMinute = 60;
+        final double minutesPerHour = 60;
+        final double hoursPerDay = 24;
 
-        int minutes = 0;
+        double minutes = 0;
 
         if (time.contains("s")) {
             minutes = Integer.parseInt(time.substring(0, time.length() - 1)) / secondsPerMinute;

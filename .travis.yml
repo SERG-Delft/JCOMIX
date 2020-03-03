@@ -1,0 +1,10 @@
+language: java
+
+script:
+  - echo "running static analysis"
+  - mvn --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -B test-compile checkstyle:check
+  - mvn --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -B pmd:check
+  - echo "running unit tests"
+  - mvn clean test jacoco:report coveralls:report
+after_success:
+  - mvn clean test jacoco:report coveralls:report

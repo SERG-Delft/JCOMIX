@@ -34,6 +34,11 @@ public class TestObjective {
     private int findInsertLocation() {
         int index = this.fileName.indexOf("-");
 
+        if (index == -1) {
+            System.out.println("TO's should be of the format {injection name}{insert location}-{count}.{TO extension}");
+            System.exit(1);
+        }
+
         String subString = this.fileName.substring(index - 1, index);
 
         // TODO specify format name

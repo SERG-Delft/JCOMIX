@@ -1,8 +1,11 @@
 package nl.tudelft.program.cli;
 
+import jga.solutions.Solution;
 import nl.tudelft.io.ArgumentProcessor;
 import nl.tudelft.program.Flag;
 import nl.tudelft.program.Program;
+import nl.tudelft.proxy.Proxy;
+import nl.tudelft.testexecutor.testing.Experiment;
 
 /**
  * The CLI version of the program class.
@@ -23,9 +26,9 @@ public class CLI extends Program {
     }
 
     @Override
-    public void start() {
+    public Solution[] start(Proxy proxy, Experiment experiment) {
         startCLI();
-        super.start();
+        return super.start(proxy, experiment);
     }
 
     /**

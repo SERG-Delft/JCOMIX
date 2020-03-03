@@ -1,9 +1,11 @@
 package nl.tudelft.io.writers;
 
 import nl.tudelft.io.ImportsMapping;
+import nl.tudelft.io.readers.ProxyReader;
 import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestObjective;
 import nl.tudelft.tobuilder.Pair;
+import nl.tudelft.util.FileUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,13 +31,14 @@ public class JUnitWriter extends TestWriter {
     }
 
     @Override
-    public void writeTest(TestObjective objective, TestCase testCase) throws IOException {
-        String fileName = objective.getFileName().replace("-", "").replace(".xml", "Test");
-        String filePath = getProperties().get("test-save-path") + System.getProperty("file.separator") + fileName + ".java";
+    public String getOutputExtension() {
+        return "java";
+    }
 
-        File file = new File(filePath);
-        FileWriter fileWriter = new FileWriter(file, false);
-        BufferedWriter writer = new BufferedWriter(fileWriter);
+    @Override
+    public String generateTest(TestObjective objective, TestCase testCase) {
+        String fileExt = ProxyReader.getLanguage();
+        String fileName = objective.getFileName().replace("-", "").replace("." + fileExt, "Test");
 
         String opening = writeOpening(fileName);
         String setUp = writeSetUp();
@@ -43,18 +46,13 @@ public class JUnitWriter extends TestWriter {
         String test = getTest(testCase, objective.getToText());
         String footer = writeEnd();
 
-        List<String> imports = ImportsMapping.getImports(opening + setUp + tearDown + test + footer);
+        String totalTest = opening + setUp + tearDown + test + footer;
 
-        String importsString = writeImports(imports);
+        List<String> imports = ImportsMapping.getImports(totalTest);
 
-        writer.write(importsString);
-        writer.write(opening);
-        writer.write(setUp);
-        writer.write(tearDown);
-        writer.write(test);
-        writer.write(footer);
+        totalTest = writeImports(imports) + totalTest;
 
-        writer.close();
+        return totalTest;
     }
 
     /**

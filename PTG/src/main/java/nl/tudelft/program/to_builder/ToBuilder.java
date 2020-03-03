@@ -1,6 +1,9 @@
 package nl.tudelft.program.to_builder;
 
+import jga.solutions.Solution;
 import nl.tudelft.proxy.HttpProcessor;
+import nl.tudelft.proxy.Proxy;
+import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.tobuilder.Pair;
 import nl.tudelft.io.ArgumentProcessor;
 import nl.tudelft.io.readers.ProxyReader;
@@ -30,7 +33,7 @@ public class ToBuilder extends Program {
     }
 
     @Override
-    public void start() {
+    public Solution[] start(Proxy proxy, Experiment experiment) {
         Map<String, Pair<String, Integer>> fieldDefaults = ProxyReader.readProxyEntries();
         Map<String, List<String>> injections = ProxyReader.readInjections();
 
@@ -49,6 +52,8 @@ public class ToBuilder extends Program {
             file.getParentFile().mkdirs();
             FileUtil.writeFile(file, map.get(key), false);
         }
+
+        return new Solution[]{};
     }
 
     /**

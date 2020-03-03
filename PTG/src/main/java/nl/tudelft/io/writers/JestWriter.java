@@ -1,13 +1,16 @@
 package nl.tudelft.io.writers;
 
+import nl.tudelft.io.ImportsMapping;
 import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestObjective;
 import nl.tudelft.tobuilder.Pair;
+import nl.tudelft.util.FileUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +35,11 @@ public class JestWriter extends TestWriter {
         }
     }
 
+    @Override
+    public String getOutputExtension() {
+        return "js";
+    }
+
     /**
      * This method will write the package.json file needed to run the jest test suites.
      *
@@ -41,8 +49,6 @@ public class JestWriter extends TestWriter {
         String filePath = getProperties().get("test-save-path") + System.getProperty("file.separator") + "package.json";
 
         File file = new File(filePath);
-        FileWriter fileWriter = new FileWriter(file, false);
-        BufferedWriter writer = new BufferedWriter(fileWriter);
 
         String text = "{\n" +
                 "  \"name\": \"test\",\n" +
@@ -58,31 +64,17 @@ public class JestWriter extends TestWriter {
                 "  }\n" +
                 "}\n";
 
-        writer.write(text);
-
-        writer.close();
+        FileUtil.writeFile(file, text, false);
     }
 
     @Override
-    public void writeTest(TestObjective objective, TestCase testCase) throws IOException {
-        String fileName = objective.getFileName().replace("-", "").replace(".xml", ".test");
-        String filePath = getProperties().get("test-save-path") + System.getProperty("file.separator") + fileName + ".js";
-
-        File file = new File(filePath);
-        FileWriter fileWriter = new FileWriter(file, false);
-        BufferedWriter writer = new BufferedWriter(fileWriter);
-
+    public String generateTest(TestObjective objective, TestCase testCase) {
         String opening = writeOpening();
         String setUp = writeSetUp();
         String test = getTest(testCase, objective.getToText());
         String tearDown = writeTearDown();
 
-        writer.write(opening);
-        writer.write(setUp);
-        writer.write(test);
-        writer.write(tearDown);
-
-        writer.close();
+        return opening + setUp + tearDown + test;
     }
 
     /**
