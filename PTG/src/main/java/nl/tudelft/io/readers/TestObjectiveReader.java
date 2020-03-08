@@ -34,6 +34,8 @@ public class TestObjectiveReader {
         File dir = new File(filesPath);
         File[] allFiles = dir.listFiles((dir1, name) -> name.endsWith("." + extension));
 
+        System.out.println(extension);
+        System.out.println(allFiles);
         if (allFiles != null) {
             List<TestObjective> testObjectives = new ArrayList<>();
 

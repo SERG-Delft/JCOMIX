@@ -8,15 +8,15 @@
   "test-suite": "junit",
   "chrome-driver-path": "path/to/chromedriver",
 
-  "time": "5m",
+  "time": "3m",
   "budgeting": "true",
   "inputs": "4",
   "restricted": "true",
   "verbose-level": "2",
   "threads": "4",
-  "random-seed": "1010",
+  "random-seed": "-1851655691",
 
-  "population": "200",
+  "population": "40",
   "initial-chromosome-length": "10",
 
   "objective": "ALL",
@@ -28,7 +28,7 @@
   "mutate": "ADAPTIVE_FITNESS_BASED_MUTATION",
   "fitness-function": "REAL_CODED_EDIT_DISTANCE",
 
-  "use-stall-manager": "true",
+  "use-stall-manager": "false",
   "max-stalled-generations": "1000",
-  "use-migration-actor": "true"
+  "use-migration-actor": "false"
 }

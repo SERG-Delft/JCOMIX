@@ -2,14 +2,11 @@ package system;
 
 import jga.solutions.Solution;
 import nl.tudelft.io.ArgumentProcessor;
-import nl.tudelft.io.DirectoryUtil;
 import nl.tudelft.io.readers.ConfigReader;
 import nl.tudelft.io.readers.ProxyReader;
 import nl.tudelft.io.readers.TestObjectiveReader;
-import nl.tudelft.io.writers.JUnitWriter;
 import nl.tudelft.program.Flag;
 import nl.tudelft.program.Program;
-import nl.tudelft.proxy.HttpProcessor;
 import nl.tudelft.proxy.Proxy;
 import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.testexecutor.testing.TestCase;
@@ -21,9 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-public class XMLSBankTest {
+public class XMLTOBuilderTest {
 
     Proxy proxy;
 
@@ -39,22 +39,32 @@ public class XMLSBankTest {
                         "CardNumber"
                 };
 
-                StringBuilder result = new StringBuilder("{");
+                StringBuilder result = new StringBuilder("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:lu=\"http://commonws/cetrel/lu\">\n");
+                result.append("   <soapenv:Header/>\n");
+                result.append("   <soapenv:Body>\n");
+                result.append("      <lu:perform>\n");
+                result.append("         <lu:resInput>\n");
 
-                for (int i = 0; i < order.length; i++) {
+                for (String s : order) {
                     for (NameValuePair pair : pairs) {
-                        if (pair.getName().equals(order[i])) {
-                            result.append("\"").append(order[i]).append("\":\"").append(pair.getValue()).append("\"");
+                        if (pair.getName().equals(s)) {
+                            result.append("           <lu:");
+                            result.append(s);
+                            result.append(">");
+                            result.append(pair.getValue());
+                            result.append("</lu:");
+                            result.append(s);
+                            result.append(">\n");
 
-                            if (i != order.length - 1) {
-                                result.append(",");
-                            }
                             break;
                         }
                     }
                 }
 
-                result.append("}");
+                result.append("         </lu:resInput>\n");
+                result.append("      </lu:perform>\n");
+                result.append("   </soapenv:Body>\n");
+                result.append("</soapenv:Envelope>\n");
 
                 return result.toString();
             }
@@ -66,13 +76,17 @@ public class XMLSBankTest {
         Map<String, Flag> flagMap = ArgumentProcessor.buildArgumentMap();
         ArgumentProcessor processor = new ArgumentProcessor(flagMap);
 
-        File TOFile = new File("src/test/resources/tos");
+        File TOFile = new File("target/generated");
         File testFile = new File("target/generated");
+        File configFile = new File("src/test/resources/config.json");
+        File proxyFile = new File("src/test/resources/proxyXML.json");
 
-        String args[] = new String[]{
+        String[] args = new String[]{
+                "--config", configFile.getAbsolutePath(),
+                "--proxy", proxyFile.getAbsolutePath(),
                 "-p", TOFile.getAbsolutePath(),
                 "-f", testFile.getAbsolutePath(),
-                "-t", "60s"
+                "--build-tos",
         };
 
         Program program = processor.getProgram(args);
@@ -83,8 +97,7 @@ public class XMLSBankTest {
         processor.validateAndProcessArguments(args);
         processor.findConflictsInPropertyValues();
 
-        TestObjectiveReader reader = new TestObjectiveReader(processor.getPropertyValue("to-read-path"));
-        List<TestObjective> testObjectives = reader.readTestObjectives(ProxyReader.getLanguage());
+        List<TestObjective> testObjectives = new ArrayList<>();
 
         testObjectives.sort(Comparator.comparing(TestObjective::getFileName));
 
@@ -94,14 +107,6 @@ public class XMLSBankTest {
 
         Solution<TestCase>[] result = program.start(proxy, experiment);
 
-        Assertions.assertEquals(1, result.length);
-        Assertions.assertEquals(1.0, result[0].getFitness());
-        TestCase testCase = result[0].getSolution();
-        Map<String, Pair<String, Integer>> inputs = testCase.getInputs();
-
-        Assertions.assertEquals("</test>", inputs.get("UserName").getFirst());
-        Assertions.assertEquals("0111", inputs.get("BankCode").getFirst());
-        Assertions.assertEquals("0001User", inputs.get("RequestId").getFirst());
-        Assertions.assertEquals("123456789123456", inputs.get("CardNumber").getFirst());
+        Assertions.assertEquals(0, result.length);
     }
 }

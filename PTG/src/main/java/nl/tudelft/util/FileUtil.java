@@ -88,24 +88,6 @@ public final class FileUtil {
     }
 
     /**
-     * Get the file from classpath to the resource folder.
-     *
-     * @param fileName  the filename
-     * @return          the File
-     */
-    public static File getFileFromResources(String fileName) {
-        ClassLoader classLoader = FileUtil.class.getClassLoader();
-
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
-
-    }
-
-    /**
      * This method will copy a file from the given source to the target.
      *
      * @param source    the source file path

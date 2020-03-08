@@ -25,9 +25,9 @@ public final class Initialize {
     /**
      * This method creates an example config or proxy file if it does not exist.
      */
-    public static void init() {
-        File fileConfig = new File(getCurrentWorkingDirectory() + System.getProperty("file.separator") + "config.json");
-        File fileProxy = new File(getCurrentWorkingDirectory() + System.getProperty("file.separator") + "proxy.json");
+    public static void init(String configPath, String proxyPath) {
+        File fileConfig = new File(configPath);
+        File fileProxy = new File(proxyPath);
 
         if (!fileConfig.exists()) {
             FileUtil.copyFile("config.json", fileConfig.getAbsolutePath());

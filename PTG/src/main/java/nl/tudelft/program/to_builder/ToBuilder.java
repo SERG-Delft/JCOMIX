@@ -40,7 +40,7 @@ public class ToBuilder extends Program {
         List<Pair<String, Integer>> values = new ArrayList<>(fieldDefaults.values());
         values.sort(Comparator.comparingInt(Pair::getSecond));
 
-        String text = getExampleMessage(fieldDefaults);
+        String text = getExampleMessage(fieldDefaults, proxy);
 
         Builder builder = new Builder(ProxyReader.getLanguage());
         Map<String, String> map = builder.build(text, ProxyReader.getLanguage(), values, injections);
@@ -62,14 +62,13 @@ public class ToBuilder extends Program {
      * @param fieldDefaults the fields with their default values.
      * @return the valid example message
      */
-    private String getExampleMessage(Map<String, Pair<String, Integer>> fieldDefaults) {
-        HttpProcessor processor = new HttpProcessor(getArgumentProcessor().getPropertyValue("proxy-url"), getArgumentProcessor().getPropertyValue("connection"));
+    private String getExampleMessage(Map<String, Pair<String, Integer>> fieldDefaults, Proxy proxy) {
         List<NameValuePair> pairs = new ArrayList<>();
 
         for (String field : fieldDefaults.keySet()) {
             pairs.add(new BasicNameValuePair(field, fieldDefaults.get(field).getFirst()));
         }
 
-        return processor.submit(pairs);
+        return proxy.submit(pairs);
     }
 }

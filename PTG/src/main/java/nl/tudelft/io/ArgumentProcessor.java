@@ -1,6 +1,7 @@
 package nl.tudelft.io;
 
 import nl.tudelft.io.readers.ConfigReader;
+import nl.tudelft.io.readers.ProxyReader;
 import nl.tudelft.program.Flag;
 import nl.tudelft.program.Program;
 import nl.tudelft.program.cli.CLI;
@@ -8,6 +9,8 @@ import nl.tudelft.program.to_builder.ToBuilder;
 import nl.tudelft.util.TextToEnum;
 
 import java.util.*;
+
+import static nl.tudelft.io.DirectoryUtil.getCurrentWorkingDirectory;
 
 /**
  * This class process all the arguments given to the program and also reads the config.
@@ -58,10 +61,10 @@ public class ArgumentProcessor {
             }
 
         } else {
-            if (propertyArgumentMap.get("objective").equals("ONE")) {
-                LogUtil.getInstance().warning("CONFIG FILE EXCEPTION: Cannot use MULTI approach with ONE objective.");
-                System.exit(1);
-            }
+//            if (propertyArgumentMap.get("objective").equals("ONE")) {
+//                LogUtil.getInstance().warning("CONFIG FILE EXCEPTION: Cannot use MULTI approach with ONE objective.");
+//                System.exit(1);
+//            }
         }
     }
 
@@ -72,8 +75,24 @@ public class ArgumentProcessor {
      * @return      the created program
      */
     public Program getProgram(String[] args) {
-        if (args.length == 1) {
-            switch (args[0]) {
+        String configPath = getCurrentWorkingDirectory() + System.getProperty("file.separator") + "config.json";
+        String proxyPath = getCurrentWorkingDirectory() + System.getProperty("file.separator") + "proxy.json";
+
+        for (int i = 0; i < args.length - 1; i++) {
+            if (args[i].equals("--config")) {
+                configPath = args[i + 1];
+            }
+
+            if (args[i].equals("--proxy")) {
+                proxyPath = args[i + 1];
+            }
+        }
+
+        ConfigReader.setFilePath(configPath);
+        ProxyReader.setFilePath(proxyPath);
+
+        for (String arg : args) {
+            switch (arg) {
                 case "--build-tos":
                     return new ToBuilder(this);
                 case "--gui":
@@ -84,23 +103,13 @@ public class ArgumentProcessor {
                 case "-h":
                 case "--help":
                     printCommands();
-                    System.exit(0);
-                    break;
+                    return null;
                 case "--init":
-                    Initialize.init();
-                    System.exit(0);
-                    break;
-                default:
-                    return new Program(this);
+                    Initialize.init(configPath, proxyPath);
+                    return null;
             }
-
-        } else {
-            return new Program(this);
         }
-
-        LogUtil.getInstance().warning("Something went wrong!");
-        System.exit(1);
-        return null;
+        return new Program(this);
     }
 
     /**
@@ -114,11 +123,14 @@ public class ArgumentProcessor {
             throw new IllegalStateException("The initializeMaps method has not been called yet! Make sure your program does this before it starts!");
         }
         for (int i = 0; i < args.length; i++) {
-            if (args.length != 1 && (args[i].equals("--cli") || args[i].equals("--gui") || args[i].equals("-h") || args[i].equals("--help"))) {
-                LogUtil.getInstance().warning("You can't give more arguments when using "
-                        + args[0]
-                        + " flag.");
-                System.exit(1);
+            if (args[i].equals("--config") || args[i].equals("--proxy")) {
+                i++;
+                continue;
+            }
+
+            if (args[i].equals("--cli") || args[i].equals("--gui") || args[i].equals("-h") || args[i].equals("--help")) {
+                // skip
+                continue;
             }
 
             if (!flagMap.containsKey(args[i])) {
@@ -223,7 +235,6 @@ public class ArgumentProcessor {
         Set<String> fitnessFunctionOptions = new HashSet<>();
         fitnessFunctionOptions.add("LINEAR_DISTANCE");
         fitnessFunctionOptions.add("REAL_CODED_EDIT_DISTANCE");
-        fitnessFunctionOptions.add("SEQUENCE_ALIGNMENT_DISTANCE");
         fitnessFunctionOptions.add("STRING_EDIT_DISTANCE");
 
         flagMap.put("-j", new Flag("fitness-function", "Set the fitness function.", fitnessFunctionOptions));

@@ -19,16 +19,6 @@ public final class ProxyReader {
 
     private static File file;
 
-    static {
-        file = new File(getCurrentWorkingDirectory() + System.getProperty("file.separator") + "proxy.json");
-
-        if (!file.exists()) {
-            LogUtil.getInstance().warning("Proxy file is missing! "
-                    + "Run the program with argument --init to generate one, or create one yourself.");
-            System.exit(1);
-        }
-    }
-
     /**
      * As this class is final its constructor should be private.
      *
@@ -38,12 +28,10 @@ public final class ProxyReader {
         throw new InstantiationException("This class cannot be instantiated!");
     }
 
-
-    private static String getCurrentWorkingDirectory() {
-        File jarPath = new File(ProxyReader.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        return jarPath.getParentFile().getAbsolutePath();
+    // TODO
+    public static void setFilePath(String path) {
+        file = new File(path);
     }
-
 
     /**
      * This method reads the proxy entries template file.
@@ -51,6 +39,17 @@ public final class ProxyReader {
      * @return a ordered mapping between fields and standard values
      */
     public static Map<String, Pair<String, Integer>> readProxyEntries() {
+        if (file == null) {
+            LogUtil.getInstance().warning("Proxy file path is not given please use setFilePath function!");
+            System.exit(1);
+        }
+
+        if (!file.exists()) {
+            LogUtil.getInstance().warning("Proxy file is missing! "
+                    + "Run the program with argument --init to generate one, or create one yourself.");
+            System.exit(1);
+        }
+
         Map<String, Pair<String, Integer>> proxyEntries = new HashMap<>();
 
         try {
@@ -78,6 +77,11 @@ public final class ProxyReader {
      * @return the language used
      */
     public static String getLanguage() {
+        if (file == null) {
+            LogUtil.getInstance().warning("Proxy file path is not given please use setFilePath function!");
+            System.exit(1);
+        }
+
         String expectedOutput = "";
 
         try {
@@ -98,6 +102,11 @@ public final class ProxyReader {
      * @return the injections
      */
     public static Map<String, List<String>> readInjections() {
+        if (file == null) {
+            LogUtil.getInstance().warning("Proxy file path is not given please use setFilePath function!");
+            System.exit(1);
+        }
+
         Map<String, List<String>> injections = new HashMap<>();
 
         try {

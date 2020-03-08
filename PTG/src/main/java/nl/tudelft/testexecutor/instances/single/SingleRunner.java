@@ -44,7 +44,7 @@ public class SingleRunner extends GeneralRunner {
 
     @Override
     public Population createPopulation() {
-        SingleProblem problem = new SingleProblem(getExecutor(), getExperiment());
+        SingleProblem problem = new SingleProblem(getExecutor(), getExperiment(), getProperties());
 
         int configPopulation = Integer.parseInt(getProperties().get("population"));
 
@@ -112,7 +112,7 @@ public class SingleRunner extends GeneralRunner {
             executeOne(index, populations, timePerTo, resultSet, timeTaken);
         }
 
-        ExecutorPool.getInstance().shutdown();
+        ExecutorPool.terminatePool();
         return resultSet;
     }
 

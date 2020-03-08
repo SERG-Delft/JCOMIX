@@ -13,6 +13,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import static nl.tudelft.io.DirectoryUtil.getCurrentWorkingDirectory;
+
 /**
  * The main class of the tool.
  * This is where the program starts.
@@ -40,6 +42,10 @@ public final class Main {
         ArgumentProcessor processor = new ArgumentProcessor(flagMap);
 
         Program program = processor.getProgram(args);
+
+        if (program == null) {
+            return;
+        }
 
         Map<String, String> propertyArgumentsMap = ConfigReader.readConfig(flagMap);
 

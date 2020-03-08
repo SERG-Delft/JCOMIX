@@ -21,16 +21,6 @@ public final class ConfigReader {
 
     private static File file;
 
-    static {
-        file = new File(getCurrentWorkingDirectory() + System.getProperty("file.separator") + "config.json");
-
-        if (!file.exists()) {
-            LogUtil.getInstance().warning("Config file is missing! "
-                    + "Run the program with argument --init to generate one, or create one yourself.");
-            System.exit(1);
-        }
-    }
-
     /**
      * As this class is final its constructor should be private.
      *
@@ -40,6 +30,11 @@ public final class ConfigReader {
         throw new InstantiationException("This class cannot be instantiated!");
     }
 
+    // TODO
+    public static void setFilePath(String path) {
+        file = new File(path);
+    }
+
     /**
      * This method reads the config file and returns a mapping between properties and values.
      *
@@ -47,6 +42,17 @@ public final class ConfigReader {
      * @return the map of properties and values.
      */
     public static Map<String, String> readConfig(Map<String, Flag> flagMap) {
+        if (file == null) {
+            LogUtil.getInstance().warning("Proxy file path is not given please use setFilePath function!");
+            System.exit(1);
+        }
+
+        if (!file.exists()) {
+            LogUtil.getInstance().warning("Proxy file is missing! "
+                    + "Run the program with argument --init to generate one, or create one yourself.");
+            System.exit(1);
+        }
+
         Map<String, String> config = new HashMap<>();
 
         try {

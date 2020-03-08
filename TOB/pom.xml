@@ -170,6 +170,14 @@
                 <configuration>
                     <destFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
                     <dataFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+
+                    <includes>
+                        <include>nl.tudelft.**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/**.**</exclude>
+                    </excludes>
                     <rules>
                         <rule>
                             <element>PACKAGE</element>
@@ -218,7 +226,7 @@
                     <printFailingErrors>true</printFailingErrors>
                     <excludes>
                         <exclude>**/*.tokens</exclude>
-                        <exclude>**/generated/*.java</exclude>
+                        <exclude>**/generated/*.*</exclude>
                     </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
@@ -280,7 +288,7 @@
                     <includeTests>true</includeTests>
                     <excludes>
                         <exclude>**/*.tokens</exclude>
-                        <exclude>**/generated/*.java</exclude>
+                        <exclude>**/generated/*.*</exclude>
                     </excludes>
                     <rulesets>
                         <ruleset>${project.parent.basedir}/pmd-rules.xml</ruleset>
@@ -294,10 +302,35 @@
                 <version>2.3</version>
             </plugin>
 
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.plugin.version}</version>
+                <configuration>
+                    <destFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                    <dataFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+
+                    <includes>
+                        <include>nl.tudelft.**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/**.**</exclude>
+                    </excludes>
+                    <rules>
+                        <rule>
+                            <element>PACKAGE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.0</minimum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </rules>
+                </configuration>
             </plugin>
 
         </plugins>

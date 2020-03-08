@@ -61,4 +61,20 @@ public class HttpProcessor implements Proxy {
 
         return "";
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public NameValuePair getConnectionType() {
+        return connectionType;
+    }
+
+    public void setConnectionType(NameValuePair connectionType) {
+        this.connectionType = connectionType;
+    }
 }

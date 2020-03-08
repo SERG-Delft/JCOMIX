@@ -12,7 +12,7 @@
     <artifactId>PTG</artifactId>
 
     <properties>
-        <jga.version>1.0.0.12-SNAPSHOT</jga.version>
+        <jga.version>1.0.0.13-SNAPSHOT</jga.version>
     </properties>
 
     <dependencies>
@@ -166,6 +166,14 @@
                 <configuration>
                     <destFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
                     <dataFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+                    <includes>
+                        <include>nl.tudelft.**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/**.**</exclude>
+                    </excludes>
+
                     <rules>
                         <rule>
                             <element>PACKAGE</element>
@@ -294,6 +302,30 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.plugin.version}</version>
+                <configuration>
+                    <destFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                    <dataFile>${project.parent.basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+
+                    <includes>
+                        <include>nl.tudelft.**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*.tokens</exclude>
+                        <exclude>**/generated/**.**</exclude>
+                    </excludes>
+                    <rules>
+                        <rule>
+                            <element>PACKAGE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.0</minimum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </rules>
+                </configuration>
             </plugin>
 
         </plugins>

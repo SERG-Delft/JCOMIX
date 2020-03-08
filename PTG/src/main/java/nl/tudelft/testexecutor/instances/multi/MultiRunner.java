@@ -66,7 +66,7 @@ public class MultiRunner extends GeneralRunner {
 
     @Override
     public Population createPopulation() {
-        MultiProblem problem = new MultiProblem(getExecutor(), getExperiment(), getEnvironment());
+        MultiProblem problem = new MultiProblem(getExecutor(), getExperiment(), getEnvironment(), getProperties());
 
         final int populationPerIsland = Integer.parseInt(getProperties().get("population")) / getExperiment().getObjectives().size();
 
@@ -121,7 +121,8 @@ public class MultiRunner extends GeneralRunner {
             resultSet[i] = new Solution<>(testCase, 0, best.getFitness()[best.getHierarchyPath()[0]]);
         }
 
-        ExecutorPool.getInstance().shutdown();
+        ExecutorPool.terminatePool();
+
         return resultSet;
     }
 }

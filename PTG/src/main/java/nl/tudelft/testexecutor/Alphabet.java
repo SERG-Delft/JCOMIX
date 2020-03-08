@@ -74,20 +74,6 @@ public class Alphabet {
         return inverse[c] != -1;
     }
 
-    // return radix R
-    public int R() {
-        return R;
-    }
-
-    // return number of bits to represent an index
-    public int lgR() {
-        int lgR = 0;
-        for (int t = R - 1; t >= 1; t /= 2) {
-            lgR++;
-        }
-        return lgR;
-    }
-
     // convert c to index between 0 and R-1.
     public int toIndex(char c) {
         if (c < 0 || c >= inverse.length || inverse[c] == -1) {
@@ -95,44 +81,5 @@ public class Alphabet {
                     + " not in alphabet");
         }
         return inverse[c];
-    }
-
-    // convert String s over this alphabet into a base-R integer
-    public int[] toIndices(String s) {
-        char[] source = s.toCharArray();
-        int[] target = new int[s.length()];
-        for (int i = 0; i < source.length; i++) {
-            target[i] = toIndex(source[i]);
-        }
-        return target;
-    }
-
-    // convert an index between 0 and R-1 into a char over this alphabet
-    public char toChar(int index) {
-        if (index < 0) {
-            return 0;
-        }
-
-        if (index >= R) {
-            throw new IndexOutOfBoundsException("Alphabet index out of bounds");
-        }
-        return alphabet[index];
-    }
-
-    // Convert base-R integer into a String over this alphabet
-    public String toChars(int[] indices) {
-        StringBuilder s = new StringBuilder(indices.length);
-        for (int i = 0; i < indices.length; i++) {
-            // Cu: add this hack so that we can use -1 as an empty character to vary the len of inputs
-            if (indices[i] >= 0) {
-                s.append(toChar(indices[i]));
-            }
-        }
-        return s.toString();
-    }
-
-
-    public AlphabetType getType() {
-        return type;
     }
 }

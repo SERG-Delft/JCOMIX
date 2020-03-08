@@ -6,14 +6,14 @@ import jga.problems.Problem;
 import nl.tudelft.io.LogUtil;
 import nl.tudelft.testexecutor.Alphabet;
 import nl.tudelft.testexecutor.AlphabetType;
-import nl.tudelft.testexecutor.instances.distances.StringDistance;
-import nl.tudelft.testexecutor.instances.distances.RealCodedEditDistance;
+import nl.tudelft.testexecutor.instances.distances.*;
 import nl.tudelft.testexecutor.testing.Experiment;
 import nl.tudelft.testexecutor.testing.TestCase;
 import nl.tudelft.testexecutor.testing.TestExecutor;
 import nl.tudelft.testexecutor.testing.TestObjective;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents the problem for the multi objective environment to solve.
@@ -36,15 +36,26 @@ public class MultiProblem implements Problem<List<List<Character>>, List<TestObj
      * @param experiment        the Experiment object
      * @param environment       the Environment
      */
-    public MultiProblem(TestExecutor executor, Experiment experiment, Environment environment) {
+    public MultiProblem(TestExecutor executor, Experiment experiment, Environment environment, Map<String, String> properties) {
         this.executor = executor;
         this.experiment = experiment;
         this.environment = environment;
+        Alphabet alphabet = AlphabetType.getAlphabet(AlphabetType.UNRESTRICTED);
 
-        // TODO make setting
-        Alphabet alphabet = AlphabetType.getAlphabet(AlphabetType.RESTRICTED);
+        if (properties.get("restricted").equals("true")) {
+            alphabet = AlphabetType.getAlphabet(AlphabetType.RESTRICTED);
+        }
 
-        this.stringDistance = new RealCodedEditDistance(alphabet);
+        switch (properties.get("fitness-function")) {
+            case "LINEAR_DISTANCE":
+                this.stringDistance = new LinearDistance(alphabet);
+                break;
+            case "STRING_EDIT_DISTANCE":
+                this.stringDistance = new StringEditDistance(alphabet);
+                break;
+            default:
+                this.stringDistance = new RealCodedEditDistance(alphabet);
+        }
     }
 
     @Override

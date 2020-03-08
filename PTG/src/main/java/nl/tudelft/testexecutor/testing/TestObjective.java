@@ -1,5 +1,6 @@
 package nl.tudelft.testexecutor.testing;
 
+import nl.tudelft.io.LogUtil;
 import nl.tudelft.util.FileUtil;
 
 import java.io.File;
@@ -35,7 +36,7 @@ public class TestObjective {
         int index = this.fileName.indexOf("-");
 
         if (index == -1) {
-            System.out.println("TO's should be of the format {injection name}{insert location}-{count}.{TO extension}");
+            LogUtil.getInstance().warning("TO's should be of the format {injection name}{insert location}-{count}.{TO extension}");
             System.exit(1);
         }
 
